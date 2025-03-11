@@ -1,1 +1,1 @@
-# AI-
+# Timetable Assistant Using AI
