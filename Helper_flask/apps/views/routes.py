@@ -1,35 +1,35 @@
 from flask import Blueprint, Flask, render_template
 
-home = Blueprint("home", __name__)
+routes = Blueprint("routes", __name__)
 
-@home.route('/')
+@routes.route('/')
 def hello_world():
     return render_template('index.html')
 
-@home.route('/layout-static.html')
+@routes.route('/layout-static.html')
 def layout_static():
     return render_template('layout-static.html')
 
-@home.route('/layout-sidenav-light.html')
+@routes.route('/layout-sidenav-light.html')
 def layout_sidenav_light():
     return render_template('layout-sidenav-light.html')
 
-@home.route('/login.html')
+@routes.route('/login.html')
 def login():
     return render_template('login.html')
 
-@home.route('/register.html')
+@routes.route('/register.html')
 def register():
     return render_template('register.html')
 
-@home.route('/tables.html')
+@routes.route('/tables.html')
 def tables():
     return render_template('tables.html')
 
-@home.route('/charts.html')
+@routes.route('/charts.html')
 def charts():
     return render_template('charts.html')
 
-@home.route('/404.html')
+@routes.route('/404.html')
 def forgot_password():
     return render_template('404.html')
