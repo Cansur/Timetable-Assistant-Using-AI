@@ -15,7 +15,14 @@ def get_lectures():
     return jsonify([
         {
             "id": lecture.id, 
-            "name": lecture.name
+            "name": lecture.name, 
+            "credit": lecture.credit,
+            "category": lecture.category,
+            "professor": lecture.professor,
+            "schedule": lecture.schedule,
+            "classroom": lecture.classroom,
+            "enrolled_students": lecture.enrolled_students,
+            "remarks": lecture.remarks
         }
         for lecture in lectures
     ]), 200

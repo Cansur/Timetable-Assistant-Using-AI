@@ -1,0 +1,50 @@
+/* 검색 결과 창 스타일 */
+.search-container {
+    display: none;
+    position: fixed;
+    /* top: 10%; */
+    bottom: 0;
+    padding-left: 255px;
+    /* left: 55%; */
+    /* transform: translateX(-50%); */
+    width: calc(100% - 255px);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    overflow-y: auto;
+    height: 40vh;
+}
+
+/* 검색 입력 및 닫기 버튼 */
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* 테이블 스타일 */
+.search-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.search-table th, .search-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.search-table th {
+    background-color: #f8f8f8;
+}
+
+.search-table td {
+    white-space: nowrap;
+}
+
+/* 별점 스타일 */
+.star-rating {
+    color: gold;
+}
