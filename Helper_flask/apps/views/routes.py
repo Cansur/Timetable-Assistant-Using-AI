@@ -33,3 +33,7 @@ def charts():
 @routes.route('/404.html')
 def forgot_password():
     return render_template('404.html')
+
+@routes.route('/test')
+def test():
+    return render_template('temp/test.html')

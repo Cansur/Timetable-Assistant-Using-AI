@@ -10,8 +10,9 @@
     width: calc(100% - 255px);
     background: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    border: 1px solid #b8b8b8;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
     overflow-y: auto;
     height: 40vh;
