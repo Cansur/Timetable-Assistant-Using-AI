@@ -2,15 +2,12 @@
 .search-container {
     display: none;
     position: fixed;
-    /* top: 10%; */
     bottom: 0;
     padding-left: 255px;
-    /* left: 55%; */
-    /* transform: translateX(-50%); */
     width: calc(100% - 255px);
     background: white;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 20px 20px 0px 0px;
     border: 1px solid #b8b8b8;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -25,27 +22,29 @@
     margin-bottom: 10px;
 }
 
-/* 테이블 스타일 */
-.search-table {
+/* 검색 창 스타일 */
+.search-container-input {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    display: none;
+}
+
+/* 회색 배경 */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    border-collapse: collapse;
-}
-
-.search-table th, .search-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-.search-table th {
-    background-color: #f8f8f8;
-}
-
-.search-table td {
-    white-space: nowrap;
-}
-
-/* 별점 스타일 */
-.star-rating {
-    color: gold;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
 }
