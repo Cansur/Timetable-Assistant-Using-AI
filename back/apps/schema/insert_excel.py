@@ -10,7 +10,7 @@ from apps.models import db
 from apps.models.lecture import Lecture
 
 # ✅ 엑셀 파일 읽기
-df = pd.read_excel(r"D:\Cansur\Timetable-Assistant-Using-AI\Helper_flask\apps\schema\lectureData.xlsx")
+df = pd.read_excel(r"D:\Cansur\Timetable-Assistant-Using-AI\back\apps\schema\lectureData.xlsx")
 
 # ✅ DB에 데이터 삽입
 with app.app_context():
