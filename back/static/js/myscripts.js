@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 검색창 열기
     searchButton.addEventListener("click", function () {
+        originalHeight = schedule.offsetHeight + "px"; // 현재 높이를 픽셀 단위로 저장
         searchContainer.style.display = "block";
         schedule.style.height = "48vh";
         fetchLectures(); // 강의 데이터 불러오기
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 검색창 닫기
     closeButton.addEventListener("click", function () {
         searchContainer.style.display = "none";
-        schedule.style.height = "100vh";
+        schedule.style.height = originalHeight; // 원래 높이로 복구
     });
 
     // 서버에서 강의 목록 불러오기
