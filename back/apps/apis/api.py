@@ -47,16 +47,13 @@ def get_lectures():
     if credit is not None:
         query = query.filter(Lecture.credit == credit)
     if category:
-        query = query.filter(Lecture.category.ilike(f"%{category}%"))
+        # query = query.filter(Lecture.category.ilike(f"%{category}%"))
+        query = query.filter(Lecture.category == category)
     if professor:
         query = query.filter(Lecture.professor.ilike(f"%{professor}%"))
 
     # 최대 100개만 가져오기
     lectures = query.limit(100).all()
-
-    # 검색 결과가 없을 경우
-    if not lectures:
-        return jsonify({"error": "No matching lectures found"}), 404
 
     # JSON 응답 반환
     return jsonify([

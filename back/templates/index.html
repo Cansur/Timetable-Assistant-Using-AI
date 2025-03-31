@@ -153,9 +153,13 @@
                     <!-- 검색 창 헤더 부분 -->
                     <div class="search-header">
                         <div class="d-flex">
-                            <div class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">전공/영역:
-                                전체</div>
-                            <div type="button" id="searchContainerInputButton"
+                            <div type="button" id="search_btn1"
+                                class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">
+                                <div>전공/영역</div> 
+                                <div>:</div>
+                                <div id="selectedSearchField" class="ps-2">없음</div>
+                            </div>
+                            <div type="button" id="search_btn2"
                                 class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">
                                 <div id="tap2">검색어</div> 
                                 <div>:</div>
@@ -198,11 +202,21 @@
                     </table>
                 </div>
 
-                <!-- 검색입력창 -->
-                <div id="searchContainerInputWindow" class="search-container-input">
+                <!-- 검색입력창1 -->
+                <div id="search_Container1" class="search-container-input" style="width: 400px; max-height: 600px;">
+                    <div class="d-flex justify-content-between">
+                        <div class="fs-5">전공/영역</div>
+                        <div type="button" id="search_Container1_Close">X</div>
+                    </div>
+                    <div id="search_Container1_Field" class="m-3 d-flex flex-column">
+                    </div>
+                </div>
+
+                <!-- 검색입력창2 -->
+                <div id="search_Container2" class="search-container-input">
                     <div class="d-flex justify-content-between">
                         <div>검색어</div>
-                        <div type="button" id="searchContainerInputCloseButton">X</div>
+                        <div type="button" id="search_Container2_Close">X</div>
                     </div>
                     <div class="mt-3 d-flex flex-row mb-3">
                         <div class="form-check me-4">
