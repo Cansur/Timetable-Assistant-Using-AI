@@ -156,8 +156,9 @@ document.addEventListener("DOMContentLoaded", function () {
         searchContainer.style.display = "block";
         schedule.style.height = "48vh";
 
-        courses = await fetchLectures(); // 강의 데이터 불러오기
-        markLectures();
+        // courses = await fetchLectures(); // 강의 데이터 불러오기
+        // markLectures();
+        everythingParamsToJson();
     });
 
     // 검색창 닫기
