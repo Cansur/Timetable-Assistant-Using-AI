@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const schedule = document.getElementById("schedule");
+    const timeTable = document.getElementById("timeTable");
 
     const searchButton = document.getElementById("searchButton");
     const searchContainer = document.getElementById("searchContainer");
@@ -29,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let isNP; // 과목명인지 교수명인지 변하는 변수
     let category;
 
+    // ----------------------------------------------------------------------------------------------
+    // function
+    // ----------------------------------------------------------------------------------------------
 
     /* 검색창에 강의 목록 표시 */
     function markLectures() {
@@ -59,8 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // 행 클릭 이벤트 추가
             row.addEventListener("click", () => {
-                alert(`선택한 강의: ${course.name} (${course.id})`);
-                console.log("선택한 강의 데이터:", course);
+                alert(`"${course.name}" 를 추가하셨습니다`);
+                addToLocalStorage("myList", course);
             });
 
             searchResults.appendChild(row);
@@ -149,8 +153,84 @@ document.addEventListener("DOMContentLoaded", function () {
         // return params;
     }
 
+    // 로컬 스토리지에서 찾아내기
+    function loadLocalStorage(key) {
+        if (!key) {
+            console.error("올바른 key 값을 입력하세요.");
+            return null;
+        }
 
-    // 검색창 열기
+        // localStorage에서 key 값을 가져옴
+        let myItem = localStorage.getItem(key);
+
+        // 만약 key가 존재하지 않으면 새로 생성하여 저장
+        if (!myItem) {
+            myItem = JSON.stringify([]); // 빈 배열을 문자열로 변환
+            localStorage.setItem(key, myItem);
+            console.log(key, "가 존재하지 않아 새로 생성되었습니다.");
+        } else {
+            console.log(key, "가 존재합니다.", JSON.parse(myItem));
+        }
+
+        return JSON.parse(myItem); // JSON 문자열을 객체로 변환하여 반환
+    }
+
+    // 로컬 스토리지에 저장하기
+    function saveLocalStorage(key, value) {
+        if (!key) {
+            console.error("올바른 key 값을 입력하세요.");
+            return;
+        }
+
+        localStorage.setItem(key, JSON.stringify(value));
+        console.log(key, "가 저장되었습니다.", value);
+    }
+
+    // 로컬 스토리지 원하는 key에 데이터 추가하기
+    function addToLocalStorage(key, newValue) {
+        if (!key) {
+            console.error("올바른 key 값을 입력하세요.");
+            return;
+        }
+
+        let existingData = localStorage.getItem(key);
+        let parsedData = existingData ? JSON.parse(existingData) : [];
+
+        if (!Array.isArray(parsedData)) {
+            console.error("저장된 데이터가 배열 형식이 아닙니다.");
+            return;
+        }
+
+        parsedData.push(newValue);
+        localStorage.setItem(key, JSON.stringify(parsedData));
+        console.log(key, "에 새로운 데이터가 추가되었습니다.", newValue);
+    }
+
+    // 처음과 데이터를 추가할 때 마다 시간표에 myList라는 localstroge를 불러와
+    // 화면에 나타나게 만드는 함수
+    function renderTimeTable(key) {
+        const container = document.getElementById("timeTable");
+        if (!container) {
+            console.error("timeTable 요소를 찾을 수 없습니다.");
+            return;
+        }
+        
+        let data = loadLocalStorage(key);
+        // container.innerHTML = "";
+        
+        // data.forEach((item, index) => {
+        //     const div = document.createElement("div");
+        //     div.textContent = `${index + 1}. ${item.name}`;
+        //     container.appendChild(div);
+        // });
+    }
+
+
+    // ----------------------------------------------------------------------------------------------
+    // 검색 창 표시
+    // ----------------------------------------------------------------------------------------------
+
+    // 메인 검색창 열기
     searchButton.addEventListener("click", async function () {
         originalHeight = schedule.offsetHeight + "px"; // 현재 높이를 픽셀 단위로 저장
         searchContainer.style.display = "block";
@@ -161,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
         everythingParamsToJson();
     });
 
-    // 검색창 닫기
+    // 메인 검색창 닫기
     closeButton.addEventListener("click", function () {
         searchContainer.style.display = "none";
         schedule.style.height = originalHeight; // 원래 높이로 복구
@@ -197,12 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
             overlay.style.display = "none";
         }
     });
-
-
-
-    // ----------------------------------------------------------------------------------------------
-    // 검색 창 표시
-    // ----------------------------------------------------------------------------------------------
 
     // 오버레이 생성
     const overlay = document.createElement("div");
@@ -241,4 +315,11 @@ document.addEventListener("DOMContentLoaded", function () {
         search_Container2.style.display = "none";
         overlay.style.display = "none";
     });
+
+    // ----------------------------------------------------------------------------------------------
+    // 시작함수
+    // ----------------------------------------------------------------------------------------------
+
+    renderTimeTable("myList");
+
 });
