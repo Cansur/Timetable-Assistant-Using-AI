@@ -48,3 +48,23 @@
     z-index: 1000;
     display: none;
 }
+
+
+/* styles/timetable.css */
+/* 시간표 테이블을 고정 너비로, 내용 넘치면 말줄임표 처리 */
+#timeTable {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#timeTable td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 4px;
+    transition: background-color 0.2s ease;
+    font-weight: bold;
+}

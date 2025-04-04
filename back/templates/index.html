@@ -113,7 +113,7 @@
                         TimeTable
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-striped text-center">
+                        <table class="table table-bordered table-striped text-center" style="table-layout: fixed; width: 100%; border-collapse: collapse;">
                             <thead class="table-dark">
                                 <tr>
                                     <th style="width: 80px;"></th>
@@ -124,12 +124,12 @@
                                     <th>금</th>
                                 </tr>
                             </thead>
-                            <tbody id="timeTable">
+                            <tbody id="timeTable" style="overflow: hidden; text-overflow: ellipsis;">
                                 <!-- 1교시 ~ 15교시 -->
                                 <script>
                                     for (let i = 1; i <= 15; i++) {
                                         document.write(`<tr style="height: 60px;">
-                                                <td style="width: 80px; white-space: nowrap;">${i}교시</td>
+                                                <td style="width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${i}교시</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -244,7 +244,10 @@
 
 
 
-
+    <script type="module">
+        import { renderTimeTable } from './js/renderTimeTable.js';
+        renderTimeTable("myList");
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="static/js/scripts.js"></script>

@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const schedule = document.getElementById("schedule");
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ----------------------------------------------------------------------------------------------
     // function
     // ----------------------------------------------------------------------------------------------
+    
 
     /* 검색창에 강의 목록 표시 */
     function markLectures() {
@@ -65,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
             row.addEventListener("click", () => {
                 alert(`"${course.name}" 를 추가하셨습니다`);
                 addToLocalStorage("myList", course);
+                renderTimeTable("myList"); // 시간표 업데이트
             });
 
             searchResults.appendChild(row);
@@ -210,21 +213,63 @@ document.addEventListener("DOMContentLoaded", function () {
     // 화면에 나타나게 만드는 함수
     function renderTimeTable(key) {
         const container = document.getElementById("timeTable");
-        if (!container) {
-            console.error("timeTable 요소를 찾을 수 없습니다.");
-            return;
-        }
-        
-        let data = loadLocalStorage(key);
-        // container.innerHTML = "";
-        
-        // data.forEach((item, index) => {
-        //     const div = document.createElement("div");
-        //     div.textContent = `${index + 1}. ${item.name}`;
-        //     container.appendChild(div);
-        // });
+        if (!container) return;
+    
+        const rawData = loadLocalStorage(key);
+        if (!Array.isArray(rawData)) return;
+    
+        const rows = container.querySelectorAll("tr");
+        const dayMap = { "월": 1, "화": 2, "수": 3, "목": 4, "금": 5 };
+    
+        const colorMap = new Map();
+    
+        rawData.forEach((subject) => {
+            const { name, schedule } = subject;
+            if (!schedule) return;
+    
+            if (!colorMap.has(name)) {
+                const bg = getRandomColor(name);
+                const fg = getContrastTextColor(bg);
+                colorMap.set(name, { bg, fg });
+            }
+    
+            const { bg, fg } = colorMap.get(name);
+            const slots = schedule.split(/\s+/).flatMap(part => part.split(","));
+    
+            slots.forEach((slot) => {
+                const match = slot.match(/^([월화수목금])(\d{1,2})$/);
+                if (!match) return;
+    
+                const day = match[1];
+                const period = parseInt(match[2], 10);
+                const rowIndex = period - 1;
+                const colIndex = dayMap[day];
+    
+                if (rows[rowIndex] && rows[rowIndex].children[colIndex]) {
+                    const cell = rows[rowIndex].children[colIndex];
+                    cell.textContent = name;
+                    cell.style.backgroundColor = bg;
+                    cell.style.color = fg;
+                }
+            });
+        });
     }
 
+    function getRandomColor(seed) {
+        let hash = 0;
+        for (let i = 0; i < seed.length; i++) {
+            hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const hue = Math.abs(hash % 360);
+        return `hsl(${hue}, 70%, 80%)`;
+    }
+    
+    function getContrastTextColor(bgColor) {
+        const match = bgColor.match(/(\d+)%\)$/);
+        if (!match) return 'black';
+        const lightness = parseInt(match[1], 10);
+        return lightness > 65 ? 'black' : 'white';
+    }
 
     // ----------------------------------------------------------------------------------------------
     // 검색 창 표시
