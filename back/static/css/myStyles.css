@@ -68,3 +68,20 @@
     transition: background-color 0.2s ease;
     font-weight: bold;
 }
+
+/* 시간표 강의 데이터 삭제 기능 */
+.delete-btn {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    background: rgba(0,0,0,0.1);
+    border: none;
+    font-size: 12px;
+    padding: 0 5px;
+    border-radius: 4px;
+    display: none;
+    cursor: pointer;
+}
+td:hover .delete-btn {
+    display: inline;
+}

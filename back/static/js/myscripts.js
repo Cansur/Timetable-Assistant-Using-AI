@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ----------------------------------------------------------------------------------------------
     // function
     // ----------------------------------------------------------------------------------------------
-    
+
 
     /* 검색창에 강의 목록 표시 */
     function markLectures() {
@@ -64,10 +64,46 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             // 행 클릭 이벤트 추가
+            // 일단 첫번째 문제: 시간이 겹치는지 검사하는 부분이 작동이 안됨
+            // 두번쨰 문제: D, F 이런식으로 시간이 나오는 부분을 어떻게 처리해야할지 모르겠음
+            // 세번쨰 문제: 온라인 처리도 해야함
             row.addEventListener("click", () => {
+                myList = loadLocalStorage("myList");
+            
+                const existingCourse = myList.find(c => c.id === course.id);
+                const existingCourseName = myList.find(c => c.name === course.name);
+                const existingCourseDay = myList.find(c => c.schedule === course.schedule);
+                if (existingCourse || existingCourseName || existingCourseDay) {
+                    alert(`"${course.name}" 는 이미 추가된 강의입니다`);
+                    return;
+                }
+            
+                // ⏰ 시간 충돌 체크 (요일+교시)
+                const newParsed = parse2Schedule(course.schedule);
+                const newSlots = [];
+                for (const [day, times] of Object.entries(newParsed)) {
+                    times.forEach(period => newSlots.push(`${day}${period}`));
+                }
+            
+                const isOverlapping = myList.some(existing => {
+                    const existingParsed = parse2Schedule(existing.schedule);
+                    for (const [day, times] of Object.entries(existingParsed)) {
+                        for (const period of times) {
+                            if (newSlots.includes(`${day}${period}`)) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                });
+            
+                if (isOverlapping) {
+                    alert(`"${course.name}" 는 기존 강의와 시간이 겹칩니다`);
+                    return;
+                }
+            
                 alert(`"${course.name}" 를 추가하셨습니다`);
                 addToLocalStorage("myList", course);
-                renderTimeTable("myList"); // 시간표 업데이트
             });
 
             searchResults.appendChild(row);
@@ -187,6 +223,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         localStorage.setItem(key, JSON.stringify(value));
         console.log(key, "가 저장되었습니다.", value);
+
+        renderTimeTable("myList"); // 시간표 업데이트
     }
 
     // 로컬 스토리지 원하는 key에 데이터 추가하기
@@ -207,50 +245,130 @@ document.addEventListener("DOMContentLoaded", function () {
         parsedData.push(newValue);
         localStorage.setItem(key, JSON.stringify(parsedData));
         console.log(key, "에 새로운 데이터가 추가되었습니다.", newValue);
+
+        renderTimeTable("myList"); // 시간표 업데이트
     }
 
     // 처음과 데이터를 추가할 때 마다 시간표에 myList라는 localstroge를 불러와
     // 화면에 나타나게 만드는 함수
+    // 이 밑에있는 parseSchedule, renderTimeTable, getRandomColor, getContrastTextColor는 GPT가 작성한 것
+    // 나중에 공부해서 이해하기
+    function parseSchedule(scheduleStr) {
+        const result = {};
+        const items = scheduleStr.split(" ");
+        for (let item of items) {
+            const parts = item.split(",");
+            for (let part of parts) {
+                const day = part[0];
+                const period = parseInt(part.slice(1));
+                if (!result[day]) result[day] = [];
+                result[day].push(period);
+            }
+        }
+
+        // 연속 교시 묶기
+        for (const day in result) {
+            result[day].sort((a, b) => a - b);
+            const grouped = [];
+            let group = [result[day][0]];
+            for (let i = 1; i < result[day].length; i++) {
+                const cur = result[day][i];
+                const prev = result[day][i - 1];
+                if (cur === prev + 1) {
+                    group.push(cur);
+                } else {
+                    grouped.push(group);
+                    group = [cur];
+                }
+            }
+            grouped.push(group);
+            result[day] = grouped;
+        }
+
+        return result;
+    }
+
     function renderTimeTable(key) {
         const container = document.getElementById("timeTable");
-        if (!container) return;
-    
-        const rawData = loadLocalStorage(key);
-        if (!Array.isArray(rawData)) return;
-    
+        if (!container) {
+            console.error("timeTable 요소를 찾을 수 없습니다.");
+            return;
+        }
+
+        const dayIndex = { 월: 1, 화: 2, 수: 3, 목: 4, 금: 5 };
+        const data = JSON.parse(localStorage.getItem(key)) || [];
+
+        // 테이블 초기화
         const rows = container.querySelectorAll("tr");
-        const dayMap = { "월": 1, "화": 2, "수": 3, "목": 4, "금": 5 };
-    
-        const colorMap = new Map();
-    
-        rawData.forEach((subject) => {
-            const { name, schedule } = subject;
-            if (!schedule) return;
-    
-            if (!colorMap.has(name)) {
-                const bg = getRandomColor(name);
-                const fg = getContrastTextColor(bg);
-                colorMap.set(name, { bg, fg });
+        rows.forEach((row, i) => {
+            if (row.children.length < 6) return;
+            for (let j = 1; j <= 5; j++) {
+                row.cells[j].innerHTML = "";
+                row.cells[j].removeAttribute("rowspan");
+                row.cells[j].style = "";
             }
-    
-            const { bg, fg } = colorMap.get(name);
-            const slots = schedule.split(/\s+/).flatMap(part => part.split(","));
-    
-            slots.forEach((slot) => {
-                const match = slot.match(/^([월화수목금])(\d{1,2})$/);
-                if (!match) return;
-    
-                const day = match[1];
-                const period = parseInt(match[2], 10);
-                const rowIndex = period - 1;
-                const colIndex = dayMap[day];
-    
-                if (rows[rowIndex] && rows[rowIndex].children[colIndex]) {
-                    const cell = rows[rowIndex].children[colIndex];
-                    cell.textContent = name;
-                    cell.style.backgroundColor = bg;
-                    cell.style.color = fg;
+        });
+
+        for (const course of data) {
+            // ⛔️ 온라인 수업은 건너뛰기
+            if (course.schedule.includes("온라인")) continue;
+
+            const parsed = parseSchedule(course.schedule);
+            const bgColor = getRandomColor(course.name);
+            const textColor = getContrastTextColor(bgColor);
+
+            for (const [day, blocks] of Object.entries(parsed)) {
+                for (const block of blocks) {
+                    const start = block[0];
+                    const length = block.length;
+                    const cell = rows[start - 1].cells[dayIndex[day]];
+
+                    // 셀 병합 및 스타일 적용
+                    cell.setAttribute("rowspan", length);
+                    cell.style.backgroundColor = bgColor;
+                    cell.style.color = textColor;
+                    cell.style.textAlign = "left";
+                    cell.style.verticalAlign = "top";
+                    cell.style.overflow = "hidden";
+                    cell.style.textOverflow = "ellipsis";
+                    cell.style.whiteSpace = "nowrap";
+                    cell.style.position = "relative";
+                    cell.style.padding = "4px";
+                    cell.style.lineHeight = "1.4";
+                    cell.title = course.name;
+
+                    cell.innerHTML = `
+                        <div class="cell-content">
+                            <div style="font-weight:bold; font-size:0.9em;">${course.name}</div>
+                            <div style="font-size:0.75em;">${course.professor}</div>
+                            <div style="font-size:0.7em;">${course.classroom}</div>
+                        </div>
+                        <button class="delete-btn" data-id="${course.id}" title="삭제">✕</button>
+                    `;
+
+                    // 아래 셀 제거 (병합 방지)
+                    for (let i = 1; i < length; i++) {
+                        const targetRow = rows[start - 1 + i];
+                        if (targetRow && dayIndex[day] < targetRow.cells.length) {
+                            targetRow.deleteCell(dayIndex[day]);
+                        }
+                    }
                 }
+            }
+        }
+
+        // 삭제 버튼 리스너 추가
+        container.querySelectorAll(".delete-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const id = parseInt(e.target.dataset.id);
+                if (!confirm("이 수업을 삭제하시겠습니까?")) return;
+
+                const current = JSON.parse(localStorage.getItem(key)) || [];
+                const updated = current.filter(c => c.id !== id);
+                saveLocalStorage(key, updated); // 저장 + renderTimeTable 재호출
+
+                // window.location.reload(); // 페이지 새로고침
             });
         });
     }
@@ -263,7 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const hue = Math.abs(hash % 360);
         return `hsl(${hue}, 70%, 80%)`;
     }
-    
+
     function getContrastTextColor(bgColor) {
         const match = bgColor.match(/(\d+)%\)$/);
         if (!match) return 'black';
@@ -271,6 +389,21 @@ document.addEventListener("DOMContentLoaded", function () {
         return lightness > 65 ? 'black' : 'white';
     }
 
+    // 뭐가 뭔지 하나도 몰라요~~
+    function parse2Schedule(scheduleStr) {
+        const result = {};
+        const items = scheduleStr.split(" ");
+        for (let item of items) {
+            const parts = item.split(",");
+            for (let part of parts) {
+                const day = part[0]; // '월', '화' 등
+                const period = parseInt(part.slice(1)); // 숫자 추출
+                if (!result[day]) result[day] = [];
+                result[day].push(period);
+            }
+        }
+        return result;
+    }
     // ----------------------------------------------------------------------------------------------
     // 검색 창 표시
     // ----------------------------------------------------------------------------------------------
