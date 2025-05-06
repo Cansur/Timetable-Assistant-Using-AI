@@ -6,33 +6,33 @@ routes = Blueprint("routes", __name__)
 def hello_world():
     return render_template('index.html')
 
-@routes.route('/layout-static.html')
-def layout_static():
-    return render_template('layout-static.html')
+# @routes.route('/layout-static.html')
+# def layout_static():
+#     return render_template('temp/layout-static.html')
 
-@routes.route('/layout-sidenav-light.html')
-def layout_sidenav_light():
-    return render_template('layout-sidenav-light.html')
+# @routes.route('/layout-sidenav-light.html')
+# def layout_sidenav_light():
+#     return render_template('temp/layout-sidenav-light.html')
 
-@routes.route('/login.html')
-def login():
-    return render_template('login.html')
+# @routes.route('/login.html')
+# def login():
+#     return render_template('temp/login.html')
 
-@routes.route('/register.html')
-def register():
-    return render_template('register.html')
+# @routes.route('/register.html')
+# def register():
+#     return render_template('temp/register.html')
 
-@routes.route('/tables.html')
-def tables():
-    return render_template('tables.html')
+# @routes.route('/tables.html')
+# def tables():
+#     return render_template('temp/tables.html')
 
-@routes.route('/charts.html')
-def charts():
-    return render_template('charts.html')
+# @routes.route('/charts.html')
+# def charts():
+#     return render_template('temp/charts.html')
 
-@routes.route('/404.html')
-def forgot_password():
-    return render_template('404.html')
+# @routes.route('/404')
+# def forgot_password():
+#     return render_template('temp/404.html')
 
 @routes.route('/test')
 def test():
