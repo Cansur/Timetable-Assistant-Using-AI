@@ -6,6 +6,10 @@ routes = Blueprint("routes", __name__)
 def hello_world():
     return render_template('index.html')
 
+@routes.route('/chat')
+def chat_world():
+    return render_template('chat.html')
+
 # @routes.route('/layout-static.html')
 # def layout_static():
 #     return render_template('temp/layout-static.html')
