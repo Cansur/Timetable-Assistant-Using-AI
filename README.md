@@ -29,7 +29,15 @@
 - **AI Interaction**: Users can send messages, and the AI responds with a simulated reply after a brief delay, mimicking a real conversation.
 - **Custom Animations**: Slide-up animations for new messages to enhance the futuristic feel.
 
-## Installation
+## 아키텍쳐
+
+</br>
+
+## 프로세스
+
+</br>
+
+## 설치방법 ( Docker )
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/your-repo/timetable-assistant-ai.git
@@ -48,16 +56,8 @@
      ```
    - Navigate to `http://localhost:8000` in your browser.
 
-## Usage
-1. Open the application in a web browser.
-2. Use the sidebar to navigate between features (e.g., TimeTable, Chat).
-3. In the Chat section, type a message in the fixed input bar at the bottom and press Enter or click "Send".
-4. The AI will respond with a simulated reply after a short delay.
-5. Use the "Scroll to Bottom" button (appears when not at the latest message) to jump to the newest message.
+</br>
 
-## Future Improvements
-- Integrate a backend server for real AI responses (e.g., using xAI's Grok API).
-- Add timetable creation and management features with interactive UI.
-- Implement persistent chat history using local storage or a database.
-- Enhance accessibility with keyboard navigation and screen reader support.
+## 시연 영상
 
+</br>
