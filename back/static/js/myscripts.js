@@ -1,7 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const main = document.getElementById("layoutSidenav_content")
+    const main = document.getElementById("main");
+    const wrapper = document.getElementById("wrapper");
     const schedule = document.getElementById("schedule");
     const timeTable = document.getElementById("timeTable");
 
@@ -423,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (onlineCourses.length === 0) return;
 
         // 박스 생성
-        const wrapper = document.createElement("div");
+        // const wrapper = document.createElement("div");
         wrapper.id = "online-class-box";
         wrapper.className = "mx-4 mt-2 mb-2 p-2 border rounded bg-light small";
 
@@ -455,8 +456,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // schedule 위에 삽입
-        const schedule = document.getElementById("schedule");
-        schedule.parentNode.insertBefore(wrapper, schedule);
+        // const schedule = document.getElementById("schedule");
+        // schedule.parentNode.insertBefore(wrapper, schedule);
 
         // 삭제 핸들링
         wrapper.querySelectorAll(".online-delete-btn").forEach(btn => {
@@ -481,9 +482,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 메인 검색창 열기
     searchButton.addEventListener("click", async function () {
-        originalHeight = schedule.offsetHeight + "px"; // 현재 높이를 픽셀 단위로 저장
+        // originalHeight = main.offsetHeight + "px"; // 현재 높이를 픽셀 단위로 저장
         searchContainer.style.display = "block";
-        schedule.style.height = "48vh";
+        main.style.height = "54vh";
 
         // courses = await fetchLectures(); // 강의 데이터 불러오기
         // markLectures();
@@ -493,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 메인 검색창 닫기
     closeButton.addEventListener("click", function () {
         searchContainer.style.display = "none";
-        schedule.style.height = originalHeight; // 원래 높이로 복구
+        // main.style.height = originalHeight; // 원래 높이로 복구
     });
 
     // 검색창의 검색어

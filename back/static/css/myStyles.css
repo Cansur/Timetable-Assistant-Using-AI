@@ -85,3 +85,12 @@
 td:hover .delete-btn {
     display: inline;
 }
+
+#main {
+    transition: height 0.3s ease;
+    overflow: hidden;
+    height: auto; /* 기본 상태 */
+
+    overflow-y: auto;
+    max-height: 100%;
+}
