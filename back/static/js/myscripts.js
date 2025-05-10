@@ -1,6 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const main = document.getElementById("layoutSidenav_content")
     const schedule = document.getElementById("schedule");
     const timeTable = document.getElementById("timeTable");
 
@@ -69,39 +70,40 @@ document.addEventListener("DOMContentLoaded", function () {
             // 세번쨰 문제: 온라인 처리도 해야함
             row.addEventListener("click", () => {
                 myList = loadLocalStorage("myList");
-            
-                const existingCourse = myList.find(c => c.id === course.id);
-                const existingCourseName = myList.find(c => c.name === course.name);
-                const existingCourseDay = myList.find(c => c.schedule === course.schedule);
-                if (existingCourse || existingCourseName || existingCourseDay) {
+
+                const existingCourse = myList.find(c => c.id === course.id || c.name === course.name);
+                if (existingCourse) {
                     alert(`"${course.name}" 는 이미 추가된 강의입니다`);
                     return;
                 }
-            
-                // ⏰ 시간 충돌 체크 (요일+교시)
-                const newParsed = parse2Schedule(course.schedule);
-                const newSlots = [];
-                for (const [day, times] of Object.entries(newParsed)) {
-                    times.forEach(period => newSlots.push(`${day}${period}`));
-                }
-            
-                const isOverlapping = myList.some(existing => {
-                    const existingParsed = parse2Schedule(existing.schedule);
-                    for (const [day, times] of Object.entries(existingParsed)) {
-                        for (const period of times) {
-                            if (newSlots.includes(`${day}${period}`)) {
-                                return true;
+
+                // 📡 온라인 수업은 시간 충돌 검사 없이 바로 통과
+                if (!course.schedule.includes("온라인")) {
+                    const newParsed = parse2Schedule(course.schedule);
+                    const newSlots = [];
+                    for (const [day, times] of Object.entries(newParsed)) {
+                        times.forEach(period => newSlots.push(`${day}${period}`));
+                    }
+
+                    const isOverlapping = myList.some(existing => {
+                        if (existing.schedule.includes("온라인")) return false; // 🔥 온라인 수업끼리도 충돌 없음
+                        const existingParsed = parse2Schedule(existing.schedule);
+                        for (const [day, times] of Object.entries(existingParsed)) {
+                            for (const period of times) {
+                                if (newSlots.includes(`${day}${period}`)) {
+                                    return true;
+                                }
                             }
                         }
+                        return false;
+                    });
+
+                    if (isOverlapping) {
+                        alert(`"${course.name}" 는 기존 강의와 시간이 겹칩니다`);
+                        return;
                     }
-                    return false;
-                });
-            
-                if (isOverlapping) {
-                    alert(`"${course.name}" 는 기존 강의와 시간이 겹칩니다`);
-                    return;
                 }
-            
+
                 alert(`"${course.name}" 를 추가하셨습니다`);
                 addToLocalStorage("myList", course);
             });
@@ -225,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(key, "가 저장되었습니다.", value);
 
         renderTimeTable("myList"); // 시간표 업데이트
+        renderOnlineClasses("myList"); // 음음
     }
 
     // 로컬 스토리지 원하는 key에 데이터 추가하기
@@ -247,6 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(key, "에 새로운 데이터가 추가되었습니다.", newValue);
 
         renderTimeTable("myList"); // 시간표 업데이트
+        renderOnlineClasses("myList");
     }
 
     // 처음과 데이터를 추가할 때 마다 시간표에 myList라는 localstroge를 불러와
@@ -404,6 +408,73 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return result;
     }
+
+    /**
+     * 온라인은 따로 윗쪽에다 두는 함수
+     * @param {string} key 
+     */
+    function renderOnlineClasses(key) {
+        const list = JSON.parse(localStorage.getItem(key)) || [];
+        const onlineCourses = list.filter(course => course.schedule.includes("온라인"));
+
+        // 기존 박스 제거
+        const prev = document.getElementById("online-class-box");
+        if (prev) prev.remove();
+        if (onlineCourses.length === 0) return;
+
+        // 박스 생성
+        const wrapper = document.createElement("div");
+        wrapper.id = "online-class-box";
+        wrapper.className = "mx-4 mt-2 mb-2 p-2 border rounded bg-light small";
+
+        const title = document.createElement("div");
+        title.className = "fw-bold text-muted mb-2";
+        title.style.fontSize = "0.9rem";
+        title.innerText = "📡 온라인 수업";
+        wrapper.appendChild(title);
+
+        onlineCourses.forEach(course => {
+            const box = document.createElement("div");
+            box.className = "position-relative border bg-white px-2 py-1 mb-1 rounded";
+
+            box.innerHTML = `
+            <div class="fw-semibold" style="font-size: 0.85rem;">${course.name} (${course.professor})</div>
+            <div style="font-size: 0.75rem;">${course.classroom}</div>
+            <button class="btn btn-sm btn-outline-danger position-absolute end-0 top-0 me-1 mt-1 online-delete-btn"
+                    data-id="${course.id}" style="display:none; font-size: 0.65rem; padding: 1px 6px;">✕</button>
+        `;
+
+            box.addEventListener("mouseenter", () => {
+                box.querySelector(".online-delete-btn").style.display = "inline-block";
+            });
+            box.addEventListener("mouseleave", () => {
+                box.querySelector(".online-delete-btn").style.display = "none";
+            });
+
+            wrapper.appendChild(box);
+        });
+
+        // schedule 위에 삽입
+        const schedule = document.getElementById("schedule");
+        schedule.parentNode.insertBefore(wrapper, schedule);
+
+        // 삭제 핸들링
+        wrapper.querySelectorAll(".online-delete-btn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.id);
+                if (!confirm("이 수업을 삭제하시겠습니까?")) return;
+
+                const updated = list.filter(c => c.id !== id);
+                localStorage.setItem(key, JSON.stringify(updated));
+                renderTimeTable(key);
+                renderOnlineClasses(key);
+            });
+        });
+    }
+
+
+
     // ----------------------------------------------------------------------------------------------
     // 검색 창 표시
     // ----------------------------------------------------------------------------------------------
@@ -499,5 +570,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // ----------------------------------------------------------------------------------------------
 
     renderTimeTable("myList");
+    renderOnlineClasses("myList");
 
 });
