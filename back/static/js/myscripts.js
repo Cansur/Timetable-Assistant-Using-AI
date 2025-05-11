@@ -482,19 +482,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 메인 검색창 열기
     searchButton.addEventListener("click", async function () {
-        // originalHeight = main.offsetHeight + "px"; // 현재 높이를 픽셀 단위로 저장
         searchContainer.style.display = "block";
         main.style.height = "54vh";
-
-        // courses = await fetchLectures(); // 강의 데이터 불러오기
-        // markLectures();
         everythingParamsToJson();
     });
 
     // 메인 검색창 닫기
     closeButton.addEventListener("click", function () {
         searchContainer.style.display = "none";
-        // main.style.height = originalHeight; // 원래 높이로 복구
+        main.style.height = "100vh"; // 원래 높이로 복구
     });
 
     // 검색창의 검색어
