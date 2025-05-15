@@ -37,7 +37,7 @@
       chatBox.innerHTML += `<div><span class="user">🙋 너:</span> ${userText}</div>`;
 
       try {
-        const res = await fetch("/recommend", {
+        const res = await fetch("/api/recommend", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ input: userText, feedbackLog })

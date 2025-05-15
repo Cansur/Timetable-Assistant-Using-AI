@@ -1,6 +1,6 @@
 import json
 
-def load_lecture_data():
+def load_lectures():
     with open("data/lectureList_fixed.json", encoding="utf-8") as f:
         return json.load(f)
 
