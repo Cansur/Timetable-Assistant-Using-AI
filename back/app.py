@@ -1,14 +1,20 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
+import requests
 import os
+from dotenv import load_dotenv
 
 from apps.views.routes import routes
 from apps.apis.api import api  # API Blueprint 가져오기
 from apps.models import db  # models 폴더에서 db 가져오기
 
 
-app = Flask(__name__)
+load_dotenv()
+
+app = Flask(__name__, static_folder='static', template_folder='templates')
+
+OPENAI_API_KEY = os.getenv("VITE_OPENAI_API_KEY")
 
 # ✅ SQLite 데이터베이스 설정
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -30,6 +36,32 @@ with app.app_context():
 # ✅ API 라우트 등록
 app.register_blueprint(routes, url_prefix="/")
 app.register_blueprint(api, url_prefix="/api")
+
+# gpt 질문
+@app.route('/api/ask', methods=['POST'])
+def ask():
+    prompt = request.json.get('prompt', '')
+
+    headers = {
+        'Authorization': f'Bearer {OPENAI_API_KEY}',
+        'Content-Type': 'application/json',
+    }
+
+    data = {
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {"role": "system", "content": "너는 시간표 추천 도우미야."},
+            {"role": "user", "content": prompt}
+        ]
+    }
+
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=data)
+
+    if response.ok:
+        content = response.json()['choices'][0]['message']['content']
+        return jsonify({ "response": content })
+    else:
+        return jsonify({ "error": "GPT 호출 실패", "detail": response.text }), 500
 
 # 실행
 if __name__ == '__main__':

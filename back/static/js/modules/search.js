@@ -96,6 +96,10 @@ export async function everythingParamsToJson() {
     markLectures(courses);
 }
 
+/**
+ * 
+ * @param {*} value 
+ */
 export function setIsNP(value){
     isNP = value; 
 }
