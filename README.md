@@ -38,23 +38,15 @@
 </br>
 
 ## 설치방법 ( Docker )
-1. **Clone the Repository**:
+1. **Docker Hub에서 이미지 Pull**
    ```bash
-   git clone https://github.com/your-repo/timetable-assistant-ai.git
-   cd timetable-assistant-ai
+   docker pull cansur/timetable:latest
    ```
-
-2. **Set Up Dependencies**:
-   - Ensure you have a web server or local development environment (e.g., Live Server in VS Code).
-   - No additional dependencies are required as all libraries are loaded via CDN.
-
-3. **Run the Application**:
-   - Open `index.html` in a browser or serve the `static` folder using a local server.
-   - Example using Python's HTTP server:
-     ```bash
-     python -m http.server 8000
-     ```
-   - Navigate to `http://localhost:8000` in your browser.
+   
+2. **Docker Container 생성**
+   ```bash
+   docker run -p 5000:5000 cansur/timetable:latest
+   ```
 
 </br>
 
