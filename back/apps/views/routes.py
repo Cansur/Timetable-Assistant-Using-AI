@@ -10,6 +10,10 @@ def hello_world():
 def chat_world():
     return render_template('chat.html')
 
+@routes.route('/chat2')
+def chat2_world():
+    return render_template('chat2.html')
+
 # @routes.route('/layout-static.html')
 # def layout_static():
 #     return render_template('temp/layout-static.html')

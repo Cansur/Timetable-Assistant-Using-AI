@@ -1,5 +1,7 @@
 Flask==3.0.3
 Werkzeug==3.0.3
 gunicorn==21.2.0
+dotenv==1.0.1
+requests
 
 Flask-SQLAlchemy==3.1.1
