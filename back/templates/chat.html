@@ -148,6 +148,43 @@
                 </div>
             </main>
         </div>
+
+        <!-- 시간표 모달 -->
+        <div id="lectureModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content bg-body-tertiary border border-secondary-subtle shadow-sm">
+                    <div class="modal-body p-3">
+                        <h6 class="text-center text-secondary-emphasis mb-3">시간표 미리보기</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center align-middle table-sm mb-3" id="timetable"
+                                style="font-size: 0.7rem;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 50px;">교시</th>
+                                        <th style="width: 40px;">월</th>
+                                        <th style="width: 40px;">화</th>
+                                        <th style="width: 40px;">수</th>
+                                        <th style="width: 40px;">목</th>
+                                        <th style="width: 40px;">금</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="timetable-body" class="table-group-divider"></tbody>
+                            </table>
+                        </div>
+
+                        <p class="text-secondary-emphasis small mb-2">이 시간표를 저장하시겠습니까?</p>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm">예</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                data-bs-dismiss="modal">아니오</button>ㅑ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
