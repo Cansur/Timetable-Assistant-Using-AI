@@ -1,13 +1,32 @@
-document.addEventListener("DOMContentLoaded", function () {
+import { saveLocalStorage } from './modules/storage.js';
 
-    init();
-    // initialize chat
-    document.getElementById('sendMessage').addEventListener('click', sendMessage);
-    document.getElementById('chatInput').addEventListener('keypress', function (e) { if (e.key === 'Enter') sendMessage(); });
+document.addEventListener("DOMContentLoaded", function () {
+    // 오류 해결용
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (document.activeElement) {
+            document.activeElement.blur();
+        }
+    });
+
+    // Bootstrap 모달 인스턴스 생성
+    const modalElement = document.getElementById('lectureModal');
+    const modalInstance = new bootstrap.Modal(modalElement);
 
     const chatDisplay = document.getElementById('chatDisplay');
     const scrollToBottomBtn = document.getElementById('scrollToBottom');
     const style = document.createElement('style');
+
+    // 예시 데이터
+    const lectures = [
+        { 과목명: '대학생을위한실용금융', 교수: '민봉기', 구분: '일반교양', 시간: '화3,화4' },
+        { 과목명: '사랑과법', 교수: '윤효영', 구분: '일반교양', 시간: '온라인1,온라인2' },
+        { 과목명: '문학의이해', 교수: '김양선', 구분: '일반교양', 시간: '월7,월8 수7' }
+    ];
+    const feedbackLog = []; // 피드백 기록용
+
+    // initialize chat
+    document.getElementById('sendMessage').addEventListener('click', sendMessage);
+    document.getElementById('chatInput').addEventListener('keypress', function (e) { if (e.key === 'Enter') sendMessage(); });
 
     chatDisplay.addEventListener('scroll', () => {
         const isAtBottom = chatDisplay.scrollTop + chatDisplay.clientHeight >= chatDisplay.scrollHeight - 10;
@@ -16,6 +35,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     scrollToBottomBtn.addEventListener('click', () => {
         chatDisplay.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // "예" 버튼 클릭
+    document.getElementById('confirmYes').addEventListener('click', function () {
+        console.log("✅ 저장 처리 실행");  // 여기에 저장 로직 연결
+        window.location.href = '/';
+        setMyList(lectures);
+        modalInstance.hide();
+    });
+
+    // "아니오" 버튼 클릭
+    document.getElementById('confirmNo').addEventListener('click', function () {
+        modalInstance.hide();
     });
 
     // 애니메이션 스타일 추가
@@ -38,6 +70,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const timeMap = { '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, 'A': 2, 'B': 3, 'C': 4, 'D': 5, 'E': 6, 'F': 7 };
 
     const colorPalette = ['#e3f2fd', '#fce4ec', '#f3e5f5', '#e8f5e9', '#fffde7'];
+
+    // 예시로 사용
+    openLectureModal(lectures);
 
     function buildTimetable(lectures) {
         const tbody = document.getElementById('timetable-body');
@@ -79,22 +114,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function openLectureModal(lectures) {
         buildTimetable(lectures);
-        const modal = new bootstrap.Modal(document.getElementById('lectureModal'));
-        modal.show();
+        document.activeElement.blur(); // 현재 포커스 해제
+        setTimeout(() => {
+            modalInstance.show();
+        }, 10);
     }
 
-    // 예시 데이터
-    const lectures = [
-        { 과목명: '영상문학', 시간: '월3,월4 수3' },
-        { 과목명: '죽음의철학적접근', 시간: '화D 목D' },
-        { 과목명: '서양사속의고전과사상', 시간: '금1,금2,금3' }
-    ];
+    /** 강의 데이터 변환 */
+    function transformLectures(lectures) {
+        return lectures.map(lecture => ({
+            name: lecture.과목명,
+            professor: lecture.교수,
+            category: lecture.구분,
+            schedule: lecture.시간
+        }));
+    }
 
-    // 예시로 사용
-    openLectureModal(lectures);
-    //---*****------------------------------------------------
-
-    const feedbackLog = []; // 피드백 기록용
+    /** local myList에 저장 */
+    function setMyList(lectures) {
+        // 변환
+        const newLectures = transformLectures(lectures);
+        saveLocalStorage('myList', newLectures);
+    }
 
     async function sendMessage() {
         const input = document.getElementById('chatInput');
@@ -124,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await res.json();
+            console.log(data);
 
             const aiMessage = document.createElement('div');
             aiMessage.className = 'flex justify-start animate-slide-up';
@@ -156,9 +198,10 @@ document.addEventListener("DOMContentLoaded", function () {
             errorMessage.scrollIntoView({ behavior: 'smooth' });
         }
     }
-
 });
 
-function init(){
 
-}
+
+
+
+

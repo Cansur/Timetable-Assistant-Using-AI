@@ -108,7 +108,6 @@ def recommend():
         }), 500
 
 
-
 # ✅ 2. 특정 강의 조회(여러 조건) (READ)
 @api.route("/lectures", methods=["GET"])
 def get_lectures():
@@ -148,3 +147,5 @@ def get_lectures():
             "remarks": lecture.remarks
         } for lecture in lectures
     ]), 200
+
+
