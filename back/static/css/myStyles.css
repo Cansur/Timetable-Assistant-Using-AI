@@ -117,3 +117,21 @@ td:hover .delete-btn {
     color: #cbd5e0;
     margin: 1rem 0;
 }
+
+
+/* statistics */
+.chart-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.chart-container h4 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+}

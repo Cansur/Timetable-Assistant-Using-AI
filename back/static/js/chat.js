@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { 과목명: '문학의이해', 교수: '김양선', 구분: '일반교양', 시간: '월7,월8 수7' }
     ];
     const feedbackLog = []; // 피드백 기록용
+    let lecturesb = [];
 
     // initialize chat
     document.getElementById('sendMessage').addEventListener('click', sendMessage);
@@ -72,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const colorPalette = ['#e3f2fd', '#fce4ec', '#f3e5f5', '#e8f5e9', '#fffde7'];
 
     // 예시로 사용
-    openLectureModal(lectures);
+    // openLectureModal(lectures);
 
     function buildTimetable(lectures) {
         const tbody = document.getElementById('timetable-body');
@@ -165,17 +166,49 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await res.json();
+            lecturesb = data
             console.log(data);
 
             const aiMessage = document.createElement('div');
             aiMessage.className = 'flex justify-start animate-slide-up';
             if (res.ok) {
-                aiMessage.innerHTML = `
-                    <div class="max-w-[70%] bg-gray-600 text-white p-3 rounded-xl shadow-md border border-gray-500 text-sm whitespace-pre-wrap" style="font-family: 'Inter', sans-serif;">
-                        ${data.reply}
-                    </div>
+                const replyText = data.reply;
+
+                // 🟦 말풍선 생성
+                const messageBubble = document.createElement("div");
+                messageBubble.className = "max-w-[70%] bg-gray-600 text-white p-3 rounded-xl shadow-md border border-gray-500 text-sm whitespace-pre-wrap";
+                messageBubble.style.fontFamily = "'Inter', sans-serif";
+                messageBubble.innerText = replyText;
+
+                // 🟨 버튼 생성 (왼쪽 정렬)
+                const lectureButtonWrapper = document.createElement("div");
+                lectureButtonWrapper.className = "mt-2 flex justify-start";  // 왼쪽 정렬
+
+                const lectureButton = document.createElement("button");
+                lectureButton.innerText = "시간표 연동하기";
+                lectureButton.className = `
+                    bg-blue-500 hover:bg-blue-600 text-white 
+                    text-xs font-semibold py-1 px-3 
+                    rounded-full shadow transition duration-200
                 `;
-            } else {
+
+                // 👉 클릭 이벤트
+                lectureButton.addEventListener("click", () => {
+                    openLectureModal(lectures);
+                });
+
+                lectureButtonWrapper.appendChild(lectureButton);
+
+                // 🧩 전체 묶음
+                const aiMessageWrapper = document.createElement("div");
+                aiMessageWrapper.className = "flex flex-col items-start space-y-1";
+
+                aiMessageWrapper.appendChild(messageBubble);
+                aiMessageWrapper.appendChild(lectureButtonWrapper);
+
+                aiMessage.appendChild(aiMessageWrapper);
+            }
+            else {
                 aiMessage.innerHTML = `
                     <div class="max-w-[70%] bg-red-600 text-white p-3 rounded-xl shadow-md border border-gray-500 text-sm" style="font-family: 'Inter', sans-serif;">
                         ⚠️ 오류: ${data.error || '알 수 없는 오류'}

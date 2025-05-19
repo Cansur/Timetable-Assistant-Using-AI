@@ -14,6 +14,10 @@ def chat_world():
 def chat2_world():
     return render_template('chat2.html')
 
+@routes.route('/statistics')
+def statistics_world():
+    return render_template('statistics.html')
+
 # @routes.route('/layout-static.html')
 # def layout_static():
 #     return render_template('temp/layout-static.html')

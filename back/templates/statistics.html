@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Helper - Statistics</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 min-h-screen font-sans">
+    <!-- Side Bar -->
+    <div class="flex">
+        <nav class="w-64 bg-gray-800 text-white h-screen p-4 fixed">
+            <div class="mb-6">
+                <h2 class="text-xl font-bold">Helper</h2>
+            </div>
+            <div class="space-y-2">
+                <a href="/" class="flex items-center p-2 hover:bg-gray-700 rounded">
+                    <i class="fas fa-table mr-2"></i> TimeTable
+                </a>
+                <a href="/chat" class="flex items-center p-2 hover:bg-gray-700 rounded">
+                    <i class="fas fa-chat mr-2"></i> Chat
+                </a>
+                <a href="/statistics" class="flex items-center p-2 bg-gray-700 rounded">
+                    <i class="fas fa-chart-area mr-2"></i> Statistics
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="ml-64 p-8 flex-1">
+            <div class="container mx-auto">
+                <h1 class="text-3xl font-bold text-white mb-2">Statistics</h1>
+                <p class="text-gray-400 mb-6">Your study insights and patterns.</p>
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-gray-800 p-4 rounded-lg shadow text-white">
+                        <h5 class="text-lg font-semibold">총 공부 시간</h5>
+                        <p class="text-2xl" id="totalHours">-- 시간</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg shadow text-white">
+                        <h5 class="text-lg font-semibold">등록된 과목 수</h5>
+                        <p class="text-2xl" id="subjectCount">-- 과목</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg shadow text-white">
+                        <h5 class="text-lg font-semibold">가장 많이 공부한 과목</h5>
+                        <p class="text-xl" id="topSubject">--</p>
+                    </div>
+                </div>
+
+                <!-- Chart Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 과목별 공부 시간 (Pie Chart) -->
+                    <div class="bg-gray-800 p-4 rounded-lg shadow">
+                        <h5 class="text-lg font-semibold text-white mb-4">과목별 공부 시간</h5>
+                        <canvas id="subjectChart" class="max-h-80"></canvas>
+                    </div>
+                    <!-- 요일별 수업 분포 (Doughnut Chart) -->
+                    <div class="bg-gray-800 p-4 rounded-lg shadow">
+                        <h5 class="text-lg font-semibold text-white mb-4">요일별 수업 분포</h5>
+                        <canvas id="weeklyChart" class="max-h-80"></canvas>
+                    </div>
+                    <!-- 주간 공부 패턴 (Bar Chart) -->
+                    <div class="bg-gray-800 p-4 rounded-lg shadow md:col-span-2">
+                        <h5 class="text-lg font-semibold text-white mb-4">주간 공부 패턴</h5>
+                        <canvas id="weeklyPatternChart" class="max-h-64"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="static/js/statistics.js"></script>
+</body>
+</html>
