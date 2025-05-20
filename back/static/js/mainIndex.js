@@ -66,22 +66,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const tbody = document.querySelector("#timeTable tbody");
-
     if (tbody.children.length === 0) {
-        for (let i = 0; i < 11; i++) {
-            const tr1 = document.createElement("tr");
-            
-            let row = `<td rowspan="2">${i + 1}교시</td>`;
-            for (let j = 0; j < 5; j++) {
-                row += `<td rowspan="2"></td>`; // 월~금도 rowspan 적용!
-            }
-            tr1.innerHTML = row;
-            tbody.appendChild(tr1);
+        for (let i = 0; i < 22; i++) { // 30분 단위 × 11교시 = 22줄
+            const tr = document.createElement("tr");
 
-            const tr2 = document.createElement("tr");
-            tbody.appendChild(tr2); // 두 번째 줄엔 td 없음!
+            // 1교시, 2교시... 표시: 홀수 번째 줄일 때만 표시
+            if (i % 2 === 0) {
+                const period = i / 2 + 1;
+                const td = document.createElement("td");
+                td.textContent = `${period}교시`;
+                td.rowSpan = 2; // 병합
+                tr.appendChild(td);
+            }
+
+            // 월~금 5칸
+            for (let j = 0; j < 5; j++) {
+                const td = document.createElement("td");
+                tr.appendChild(td);
+            }
+
+            tbody.appendChild(tr);
         }
     }
+
 
 
     const saved = localStorage.getItem("myList");
@@ -161,10 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }, 0);
     }
-
-    // 최초 렌더링
-    renderTimeTable("myList");
-    renderOnlineClasses("myList");
 });
 
 // ✅ 검색어 모달에서 "적용" 버튼 또는 Enter 눌렀을 때 호출됨

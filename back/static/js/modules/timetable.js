@@ -11,12 +11,10 @@ export function renderTimeTable(key) {
     rows.forEach(row => {
         for (let i = 1; i <= 5; i++) {
             const cell = row.cells[i];
-            if (cell) {
-                if (cell.hasAttribute("rowspan")) continue; // 병합된 셀은 유지
-                cell.innerHTML = "";
-                cell.removeAttribute("rowspan");
-                cell.style = "";
-            }
+            if (!cell || cell.hasAttribute("rowspan")) continue;
+            cell.innerHTML = "";
+            cell.removeAttribute("rowspan");
+            cell.style = "";
         }
     });
 
@@ -27,7 +25,6 @@ export function renderTimeTable(key) {
         const bg = getRandomColor(course.name);
         const fg = getContrastTextColor(bg);
 
-        console.log("Parsed schedule", parsed);
 
         for (const [day, blocks] of Object.entries(parsed)) {
             const col = dayIndex[day];
@@ -35,6 +32,11 @@ export function renderTimeTable(key) {
 
             for (const [startBlock, blockLength] of blocks) {
                 const baseRow = rows[startBlock];
+
+                console.log("Trying to render", course.name, "on", day, "row", startBlock, "col", col);
+                console.log("baseRow:", baseRow);
+                console.log("baseRow.cells:", baseRow?.cells);
+
                 if (!baseRow || !baseRow.cells[col]) continue;
 
                 const cell = baseRow.cells[col];
@@ -52,10 +54,15 @@ export function renderTimeTable(key) {
 
                 for (let i = 1; i < blockLength; i++) {
                     const delRow = rows[startBlock + i];
-                    if (delRow && delRow.cells[col]) {
+                    if (!delRow) continue;
+
+                    // 💥 이 줄에서 해당 열의 셀 삭제 (존재할 때만)
+                    const cellToDelete = delRow.cells[col];
+                    if (cellToDelete) {
                         delRow.deleteCell(col);
                     }
                 }
+
             }
         }
     }
