@@ -310,6 +310,15 @@ body {
     color: red;
 }
 
+/* 왼쪽 교시 셀 스타일 */
+.period-cell {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    width: 42px;
+    font-size: 10px;
+    text-align: center;
+}
+
 /* ===== 온라인 수업 블록 ===== */
 .online-list-wrapper {
     width: 95%;

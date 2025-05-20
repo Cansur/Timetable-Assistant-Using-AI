@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedSearchField = document.getElementById("selectedSearchField");
     const radioName = document.getElementById("radioName");
 
+    initTimeTableStructure();
+
     // 메인 검색 모달 열기
     addCourseBtn.addEventListener("click", () => {
         searchContainer.style.display = "block";
@@ -65,30 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    const tbody = document.querySelector("#timeTable tbody");
-    if (tbody.children.length === 0) {
-        for (let i = 0; i < 22; i++) { // 30분 단위 × 11교시 = 22줄
-            const tr = document.createElement("tr");
-
-            // 1교시, 2교시... 표시: 홀수 번째 줄일 때만 표시
-            if (i % 2 === 0) {
-                const period = i / 2 + 1;
-                const td = document.createElement("td");
-                td.textContent = `${period}교시`;
-                td.rowSpan = 2; // 병합
-                tr.appendChild(td);
-            }
-
-            // 월~금 5칸
-            for (let j = 0; j < 5; j++) {
-                const td = document.createElement("td");
-                tr.appendChild(td);
-            }
-
-            tbody.appendChild(tr);
-        }
-    }
-
 
 
     const saved = localStorage.getItem("myList");
@@ -97,77 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderOnlineClasses("myList");
     }
 
-    // ✅ 필터 팝업 생성 함수
-    function showFilterPopup(targetBtn, options, onSelect, withInput = false) {
-        // 기존 팝업 제거
-        const existing = document.querySelector(".filter-popup");
-        if (existing) existing.remove();
 
-        const popup = document.createElement("div");
-        popup.classList.add("filter-popup");
-
-        if (withInput) {
-            const input = document.createElement("input");
-            input.placeholder = "검색어를 입력하세요";
-            input.style.width = "100%";
-            input.style.padding = "6px";
-            input.style.marginBottom = "8px";
-            input.style.border = "1px solid #ccc";
-            input.style.borderRadius = "6px";
-
-            const confirm = document.createElement("div");
-            confirm.textContent = "적용";
-            confirm.style.background = "#5e5eff";
-            confirm.style.color = "#fff";
-            confirm.style.textAlign = "center";
-            confirm.style.padding = "6px";
-            confirm.style.borderRadius = "6px";
-            confirm.style.cursor = "pointer";
-            confirm.onclick = () => {
-                const val = input.value.trim();
-                if (val) {
-                    onSelect(val);
-                    popup.remove();
-                }
-            };
-
-            popup.appendChild(input);
-            popup.appendChild(confirm);
-        } else {
-            options.forEach(opt => {
-                const item = document.createElement("div");
-                item.textContent = opt;
-                item.onclick = () => {
-                    onSelect(opt);
-                    popup.remove();
-                };
-                popup.appendChild(item);
-            });
-        }
-
-        const closeBtn = document.createElement("div");
-        closeBtn.className = "filter-close-btn";
-        closeBtn.innerHTML = "✕";
-        closeBtn.onclick = () => popup.remove();
-        popup.appendChild(closeBtn);
-
-        // 위치 설정
-        const rect = targetBtn.getBoundingClientRect();
-        popup.style.top = `${rect.bottom + window.scrollY + 6}px`;
-        popup.style.left = `${rect.left + window.scrollX}px`;
-
-        document.body.appendChild(popup);
-
-        // 외부 클릭 시 제거
-        setTimeout(() => {
-            document.addEventListener("click", function closePopupOutside(e) {
-                if (!popup.contains(e.target) && e.target !== targetBtn) {
-                    popup.remove();
-                    document.removeEventListener("click", closePopupOutside);
-                }
-            });
-        }, 0);
-    }
 });
 
 // ✅ 검색어 모달에서 "적용" 버튼 또는 Enter 눌렀을 때 호출됨
@@ -191,3 +99,104 @@ window.applySearchKeyword = function () {
 
     document.getElementById("searchKeywordModal").style.display = "none";
 };
+
+function initTimeTableStructure() {
+    const tbody = document.querySelector("#timeTable tbody");
+    tbody.innerHTML = ""; // 전체 제거
+
+    for (let i = 0; i < 22; i++) {
+        const tr = document.createElement("tr");
+
+        // 왼쪽 교시 열 항상 생성
+        const td = document.createElement("td");
+
+        // 홀수 번째 줄에는 label (1교시, 2교시...), 짝수 줄엔 빈칸
+        if (i % 2 === 0) {
+            const period = i / 2 + 1;
+            td.textContent = `${period}교시`;
+        }
+
+        td.classList.add("period-cell");
+        tr.appendChild(td);
+
+        // 월~금 열 5개
+        for (let j = 0; j < 5; j++) {
+            const td = document.createElement("td");
+            tr.appendChild(td);
+        }
+
+        tbody.appendChild(tr);
+    }
+}
+
+// ✅ 필터 팝업 생성 함수
+function showFilterPopup(targetBtn, options, onSelect, withInput = false) {
+    // 기존 팝업 제거
+    const existing = document.querySelector(".filter-popup");
+    if (existing) existing.remove();
+
+    const popup = document.createElement("div");
+    popup.classList.add("filter-popup");
+
+    if (withInput) {
+        const input = document.createElement("input");
+        input.placeholder = "검색어를 입력하세요";
+        input.style.width = "100%";
+        input.style.padding = "6px";
+        input.style.marginBottom = "8px";
+        input.style.border = "1px solid #ccc";
+        input.style.borderRadius = "6px";
+
+        const confirm = document.createElement("div");
+        confirm.textContent = "적용";
+        confirm.style.background = "#5e5eff";
+        confirm.style.color = "#fff";
+        confirm.style.textAlign = "center";
+        confirm.style.padding = "6px";
+        confirm.style.borderRadius = "6px";
+        confirm.style.cursor = "pointer";
+        confirm.onclick = () => {
+            const val = input.value.trim();
+            if (val) {
+                onSelect(val);
+                popup.remove();
+            }
+        };
+
+        popup.appendChild(input);
+        popup.appendChild(confirm);
+    } else {
+        options.forEach(opt => {
+            const item = document.createElement("div");
+            item.textContent = opt;
+            item.onclick = () => {
+                onSelect(opt);
+                popup.remove();
+            };
+            popup.appendChild(item);
+        });
+    }
+
+    const closeBtn = document.createElement("div");
+    closeBtn.className = "filter-close-btn";
+    closeBtn.innerHTML = "✕";
+    closeBtn.onclick = () => popup.remove();
+    popup.appendChild(closeBtn);
+
+    // 위치 설정
+    const rect = targetBtn.getBoundingClientRect();
+    popup.style.top = `${rect.bottom + window.scrollY + 6}px`;
+    popup.style.left = `${rect.left + window.scrollX}px`;
+
+    document.body.appendChild(popup);
+
+    // 외부 클릭 시 제거
+    setTimeout(() => {
+        document.addEventListener("click", function closePopupOutside(e) {
+            if (!popup.contains(e.target) && e.target !== targetBtn) {
+                popup.remove();
+                document.removeEventListener("click", closePopupOutside);
+            }
+        });
+    }, 0);
+}
