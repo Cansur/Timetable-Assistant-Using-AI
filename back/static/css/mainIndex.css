@@ -1,343 +1,372 @@
+/* mainIndex.css */
 /* ===== 공통 ===== */
 @import url('header.css');
 @import url('timetable.css');
 
 :root {
-  --highlight: #5e5eff;
-  --bg: #f4f4fc;
-  --white: #fff;
-  --gray: #ddd;
-  --blue: #fffffff6;
-  --text-color: #333;
+    --highlight: #5e5eff;
+    --bg: #f4f4fc;
+    --white: #fff;
+    --gray: #ddd;
+    --blue: #fffffff6;
+    --text-color: #333;
 }
 
 body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg);
-  color: var(--text-color);
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-color);
 }
 
 /* ===== 레이아웃 ===== */
 .main-centered {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px;
 }
 
 .btn-primary {
-  padding: 10px 16px;
-  background-color: var(--highlight);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 16px;
+    padding: 10px 16px;
+    background-color: var(--highlight);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 16px;
 }
 
 /* ===== 모달 ===== */
 .modal {
-  display: none;
-  position: fixed;
-  top: 8%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  z-index: 1000;
-  border-radius: 16px;
-  width: 95%;
-  max-width: 960px;
-  max-height: 88%;
-  overflow-y: auto;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    display: none;
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    z-index: 1000;
+    border-radius: 16px;
+    width: 95%;
+    max-width: 960px;
+    max-height: 88%;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content {
-  padding: 32px 24px;
-  font-size: 0.95rem;
+    padding: 32px 24px;
+    font-size: 0.95rem;
 }
 
 .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.25rem;
-  font-weight: 600;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 16px;
 }
 
 .modal-body input[type="text"] {
-  width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 16px;
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 16px;
 }
 
 /* ===== 필터 ===== */
 .filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .filter-btn {
-  background: #f0f0f0;
-  color: #333;
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
+    background: #f0f0f0;
+    color: #333;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
 }
 
 .filter-btn:hover {
-  background-color: #e8e8e8;
+    background-color: #e8e8e8;
 }
 
 .filter-popup {
-  position: absolute;
-  background: #ffffff;
-  border: 1px solid #bbb;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  padding: 16px;
-  z-index: 1001;
-  font-size: 0.9rem;
-  min-width: 220px;
-  animation: fadeIn 0.2s ease-in-out;
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid #bbb;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    z-index: 1001;
+    font-size: 0.9rem;
+    min-width: 220px;
+    animation: fadeIn 0.2s ease-in-out;
 }
 
 .filter-popup input {
-  width: 100%;
-  padding: 10px;
-  font-size: 0.95rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 12px;
+    width: 100%;
+    padding: 10px;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 12px;
 }
 
 .filter-popup div {
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-  font-weight: 500;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+    font-weight: 500;
 }
 
 .filter-popup div:hover {
-  background-color: #f4f4f4;
+    background-color: #f4f4f4;
 }
 
 .filter-close-btn {
-  text-align: right;
-  font-size: 1rem;
-  color: #999;
-  margin-top: 10px;
-  cursor: pointer;
+    text-align: right;
+    font-size: 1rem;
+    color: #999;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 .filter-close-btn:hover {
-  color: #333;
+    color: #333;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .search-tags {
-  margin-bottom: 14px;
-  font-size: 0.9rem;
-  color: #555;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    color: #555;
 }
 
 .search-tags span {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 /* ===== 오버레이 ===== */
 .overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.3);
-  z-index: 999;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 999;
 }
 
 /* ===== 검색결과 테이블 ===== */
 .result-wrapper {
-  max-height: 400px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 .table-result {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
 }
 
 .table-result thead {
-  background-color: #f6f6f9;
+    background-color: #f6f6f9;
 }
 
 .table-result th,
 .table-result td {
-  border: 1px solid #ddd;
-  padding: 5px 6px; /* 작게 줄임 */
-  text-align: center;
-  line-height: 1.1; /* 줄 간격 감소 */
-  height: 28px; /* 최대 높이 제어 */
+    border: 1px solid #ddd;
+    padding: 5px 6px;
+    /* 작게 줄임 */
+    text-align: center;
+    line-height: 1.1;
+    /* 줄 간격 감소 */
+    height: 28px;
+    /* 최대 높이 제어 */
 }
 
 .table-result tbody tr:hover {
-  background-color: #f1f3ff;
-  cursor: pointer;
+    background-color: #f1f3ff;
+    cursor: pointer;
 }
 
 /* ===== 시간표 영역 ===== */
 .timetable-card {
-  width: 95%;
-  max-width: 860px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  margin: 16px auto;
-  font-size: 11px;
-  padding: 0;
+    width: 95%;
+    max-width: 860px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin: 16px auto;
+    font-size: 11px;
+    padding: 0;
 }
 
 .timetable-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  font-size: 11px;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.timetable-table tr {
+  height: 30px !important;
 }
 
 .timetable-table thead tr {
-  background-color: #f0f0fa;
-  font-weight: bold;
-  font-size: 12px;
+    background-color: #f0f0fa;
+    font-weight: bold;
+    font-size: 12px;
 }
-.timetable-table th,
+
+.timetable-table td,
+.timetable-table th {
+  padding: 1px 2px !important;
+  font-size: 13px !important;
+  line-height: 1.1 !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+}
+
 .timetable-table td {
-  border: 1px solid #ccc;
-  text-align: center;
-  padding: 2px;
-  height: 30px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: top;
+    min-height: 0 !important;
+    vertical-align: top !important;
 }
+
 .timetable-table td:first-child {
-  background-color: #f9f9f9;
-  font-weight: 500;
-  width: 42px;
-  font-size: 10px;
+    background-color: #f9f9f9;
+    font-weight: 500;
+    width: 42px;
+    font-size: 10px;
+}
+
+.timetable-table tr:nth-child(even) {
+    border-bottom: 1px solid #eee;
 }
 
 /* 셀 안 구조 */
 .course-wrapper {
-  padding: 2px 4px;
-  position: relative;
-  overflow: hidden;
+    padding: 0 2px;
 }
+
 .course-cell {
-  font-size: 10px;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-  vertical-align: top;
+    font-size: 10px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    vertical-align: top;
 }
+
 .delete-btn {
-  font-size: 10px;
-  top: 2px;
-  right: 4px;
-  opacity: 0;
-  position: absolute;
-  background: none;
-  border: none;
-  color: #777;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
+    font-size: 10px;
+    top: 1px;
+    right: 2px;
+    opacity: 0;
+    position: absolute;
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
 }
+
 .course-wrapper:hover .delete-btn {
-  opacity: 1;
+    opacity: 1;
 }
+
 .delete-btn:hover {
-  color: red;
+    color: red;
 }
 
 /* ===== 온라인 수업 블록 ===== */
 .online-list-wrapper {
-  width: 95%;
-  max-width: 960px;
-  margin: 16px auto;
-  padding: 12px 16px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    width: 95%;
+    max-width: 960px;
+    margin: 16px auto;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
-.online-list-wrapper > .online-title {
-  font-weight: bold;
-  font-size: 0.95rem;
-  color: #333;
-  margin-bottom: 8px;
+
+.online-list-wrapper>.online-title {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 8px;
 }
+
 .online-course-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f7f7fc;
-  border: 1px solid #ddd;
-  padding: 6px 10px;
-  border-radius: 8px;
-  margin-bottom: 6px;
-  font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f7fc;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
 }
+
 .online-course-box .left {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
+
 .online-course-box .left strong {
-  font-size: 13px;
-  color: #222;
-  margin-bottom: 2px;
+    font-size: 13px;
+    color: #222;
+    margin-bottom: 2px;
 }
+
 .online-course-box .left span {
-  font-size: 12px;
-  color: #666;
+    font-size: 12px;
+    color: #666;
 }
+
 .online-course-box button {
-  background: none;
-  border: none;
-  font-size: 12px;
-  color: #888;
-  cursor: pointer;
-  padding: 2px 6px;
-  transition: color 0.2s ease;
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: #888;
+    cursor: pointer;
+    padding: 2px 6px;
+    transition: color 0.2s ease;
 }
+
 .online-course-box button:hover {
-  color: red;
+    color: red;
 }

@@ -1,3 +1,4 @@
+// mainIndex.js
 import { everythingParamsToJson, setIsNP } from './modules/search.js';
 import { renderTimeTable, renderOnlineClasses } from './modules/timetable.js';
 
@@ -64,26 +65,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    const timeTableBody = document.getElementById("timeTable");
-
-    // ✅ 교시 행만 처음에 1회 생성
-    if (timeTableBody.children.length === 0) {
-        for (let i = 1; i <= 15; i++) {
-            const row = document.createElement("tr");
-            row.innerHTML = `<td>${i}교시</td>` + "<td></td>".repeat(5);
-            timeTableBody.appendChild(row);
-        }
-    }
-
     const tbody = document.querySelector("#timeTable tbody");
 
     if (tbody.children.length === 0) {
-        for (let i = 1; i <= 15; i++) {
-            const row = document.createElement("tr");
-            row.innerHTML = `<td>${i}교시</td>` + "<td></td><td></td><td></td><td></td><td></td>";
-            tbody.appendChild(row);
+        for (let i = 0; i < 11; i++) {
+            const tr1 = document.createElement("tr");
+            
+            let row = `<td rowspan="2">${i + 1}교시</td>`;
+            for (let j = 0; j < 5; j++) {
+                row += `<td rowspan="2"></td>`; // 월~금도 rowspan 적용!
+            }
+            tr1.innerHTML = row;
+            tbody.appendChild(tr1);
+
+            const tr2 = document.createElement("tr");
+            tbody.appendChild(tr2); // 두 번째 줄엔 td 없음!
         }
     }
+
 
     const saved = localStorage.getItem("myList");
     if (saved && saved !== "[]") {
