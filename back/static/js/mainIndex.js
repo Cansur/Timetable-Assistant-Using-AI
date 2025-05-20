@@ -11,16 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedSearchField = document.getElementById("selectedSearchField");
     const radioName = document.getElementById("radioName");
 
-    // 시간표 초기화
-    const tbody = document.getElementById("timeTable");
-    if (tbody.children.length === 0) {
-        for (let i = 1; i <= 15; i++) {
-            const row = document.createElement("tr");
-            row.innerHTML = `<td>${i}교시</td>` + `<td></td>`.repeat(5);
-            tbody.appendChild(row);
-        }
-    }
-
     // 메인 검색 모달 열기
     addCourseBtn.addEventListener("click", () => {
         searchContainer.style.display = "block";
@@ -36,25 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     closeButton.addEventListener("click", closeModal);
     overlay.addEventListener("click", closeModal);
 
-    // 메인 검색창에서 Enter로 검색
-    // searchInput.addEventListener("keypress", (e) => {
-    //     if (e.key !== "Enter") return;
-    //     const query = searchInput.value.trim();
-    //     const isName = radioName.checked;
-
-    //     setIsNP(isName ? "name" : "professor");
-
-    //     if (!query) {
-    //         selectedSearchName.textContent = "없음";
-    //         selectedSearchName.style.color = "white";
-    //     } else {
-    //         selectedSearchName.textContent = query;
-    //         selectedSearchName.style.color = "#E3242B";
-    //     }
-
-    //     everythingParamsToJson();
-    // });
-
     // 필터 바 → 검색어 입력 모달 열기
     // 검색어 입력 필터 클릭 시 → 모달 열기 및 안전한 키 이벤트 바인딩
     document.querySelector('[data-filter="search"]').addEventListener("click", (e) => {
@@ -68,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             everythingParamsToJson();
         }, true);
     });
+
     // 검색어 모달에서 Enter로도 적용되도록
     document.getElementById("searchKeywordInput").addEventListener("keypress", (e) => {
         if (e.key === "Enter") applySearchKeyword();
@@ -92,6 +64,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    const timeTableBody = document.getElementById("timeTable");
+
+    // ✅ 교시 행만 처음에 1회 생성
+    if (timeTableBody.children.length === 0) {
+        for (let i = 1; i <= 15; i++) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${i}교시</td>` + "<td></td>".repeat(5);
+            timeTableBody.appendChild(row);
+        }
+    }
+
+    const tbody = document.querySelector("#timeTable tbody");
+
+    if (tbody.children.length === 0) {
+        for (let i = 1; i <= 15; i++) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${i}교시</td>` + "<td></td><td></td><td></td><td></td><td></td>";
+            tbody.appendChild(row);
+        }
+    }
+
+    const saved = localStorage.getItem("myList");
+    if (saved && saved !== "[]") {
+        renderTimeTable("myList");
+        renderOnlineClasses("myList");
+    }
 
     // ✅ 필터 팝업 생성 함수
     function showFilterPopup(targetBtn, options, onSelect, withInput = false) {
@@ -164,7 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }, 0);
     }
-
 
     // 최초 렌더링
     renderTimeTable("myList");

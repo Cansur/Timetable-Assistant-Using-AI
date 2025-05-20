@@ -1,105 +1,127 @@
 import { getContrastTextColor, getRandomColor, parseSchedule } from './utils.js';
-import { loadLocalStorage, saveLocalStorage } from './storage.js';
 
 export function renderTimeTable(key) {
-    const container = document.getElementById("timeTable");
-    const data = loadLocalStorage(key);
-    const dayIndex = { 월: 1, 화: 2, 수: 3, 목: 4, 금: 5 };
-    const rows = container.querySelectorAll("tr");
+  const data = JSON.parse(localStorage.getItem(key) || "[]");
+  const tbody = document.querySelector("#timeTable tbody");
+  const rows = tbody.querySelectorAll("tr");
+  const dayIndex = { 월: 1, 화: 2, 수: 3, 목: 4, 금: 5 };
 
-    // 초기화
-    rows.forEach(row => {
-        for (let i = 1; i <= 5; i++) {
-            row.cells[i].innerHTML = "";
-            row.cells[i].removeAttribute("rowspan");
-            row.cells[i].style = "";
-        }
-    });
+  // 초기화: 모든 셀 초기화
+  rows.forEach(row => {
+    for (let i = 1; i <= 5; i++) {
+      const cell = row.cells[i];
+      if (!cell) {
+        const filler = document.createElement("td");
+        row.appendChild(filler);
+      } else {
+        cell.innerHTML = "";
+        cell.removeAttribute("rowspan");
+        cell.style = "";
+      }
+    }
+  });
 
-    data.forEach(course => {
-        if (course.schedule.includes("온라인")) return;
-        const parsed = parseSchedule(course.schedule);
-        const bg = getRandomColor(course.name);
-        const text = getContrastTextColor(bg);
+  for (const course of data) {
+    if (!course.schedule || course.schedule.includes("온라인")) continue;
 
-        for (const [day, blocks] of Object.entries(parsed)) {
-            const colIndex = dayIndex[day];
-            if (colIndex === undefined) {
-                console.warn("⛔️ 잘못된 요일:", day);
-                continue;
+    const parsed = parseSchedule(course.schedule);
+    const bg = getRandomColor(course.name);
+    const fg = getContrastTextColor(bg);
+
+    for (const [day, blocks] of Object.entries(parsed)) {
+      const col = dayIndex[day];
+      if (col === undefined) continue;
+
+      for (const block of blocks) {
+        const start = block[0];
+        const len = block.length;
+
+        const baseRow = rows[start - 1];
+        if (!baseRow || !baseRow.cells[col]) continue;
+
+        const cell = baseRow.cells[col];
+        cell.setAttribute("rowspan", len);
+        cell.style.backgroundColor = bg;
+        cell.style.color = fg;
+        cell.innerHTML = `
+          <div class="course-wrapper">
+            <div class="course-cell">
+              <strong>${course.name}</strong><br>${course.classroom}
+            </div>
+            <button class="delete-btn" data-id="${course.id}">✕</button>
+          </div>
+        `;
+
+        // 아래 셀 정확히 삭제
+        for (let i = 1; i < len; i++) {
+          const delRow = rows[start - 1 + i];
+          if (delRow) {
+            let count = 0;
+            for (let j = 0; j < delRow.cells.length; j++) {
+              const cell = delRow.cells[j];
+              if (cell && j === col) {
+                delRow.deleteCell(j);
+                break;
+              }
             }
-
-            for (const block of blocks) {
-                const start = block[0];
-                const len = block.length;
-
-                const row = rows[start - 1];
-                if (!row || !row.cells[colIndex]) {
-                    console.warn("⛔️ 잘못된 셀 접근:", day, start, course.name);
-                    continue;
-                }
-
-                const cell = row.cells[colIndex];
-                cell.setAttribute("rowspan", len);
-                cell.style.backgroundColor = bgColor;
-                cell.style.color = textColor;
-                cell.innerHTML = `
-                    <div><strong>${course.name}</strong><br>
-                    ${course.professor}<br>
-                    ${course.classroom}</div>
-                    <button class="delete-btn" data-id="${course.id}">✕</button>
-                `;
-
-                // 셀 병합 시 하단 셀 제거
-                for (let i = 1; i < len; i++) {
-                    const delRow = rows[start - 1 + i];
-                    if (delRow && delRow.cells[colIndex]) {
-                        delRow.deleteCell(colIndex);
-                    }
-                }
-            }
+          }
         }
+      }
+    }
+  }
 
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      const id = parseInt(btn.dataset.id);
+      const updated = data.filter(c => c.id !== id);
+      localStorage.setItem(key, JSON.stringify(updated));
+      renderTimeTable(key);
+      renderOnlineClasses(key);
     });
-
-    container.querySelectorAll(".delete-btn").forEach(btn => {
-        btn.addEventListener("click", e => {
-            e.stopPropagation();
-            const id = parseInt(btn.dataset.id);
-            const updated = data.filter(c => c.id !== id);
-            saveLocalStorage(key, updated);
-            renderTimeTable(key);
-        });
-    });
+  });
 }
+
+
 
 export function renderOnlineClasses(key) {
     const wrapper = document.getElementById("wrapper");
-    const list = loadLocalStorage(key);
-    const onlineCourses = list.filter(c => c.schedule.includes("온라인"));
+    const data = JSON.parse(localStorage.getItem(key) || "[]");
+    const onlineCourses = data.filter(course => course.schedule.includes("온라인"));
 
     wrapper.innerHTML = "";
+
     if (!onlineCourses.length) return;
 
     const title = document.createElement("div");
+    title.className = "online-title";
     title.textContent = "📡 온라인 수업";
-    title.className = "fw-bold text-muted mb-2";
     wrapper.appendChild(title);
 
-    onlineCourses.forEach(course => {
+    for (const course of onlineCourses) {
         const box = document.createElement("div");
-        box.className = "border bg-white px-2 py-1 mb-1 rounded";
-        box.innerHTML = `
-            <div><strong>${course.name}</strong> (${course.professor})</div>
-            <div>${course.classroom}</div>
-            <button class="online-delete-btn" data-id="${course.id}">삭제</button>
+        box.className = "online-course-box";
+
+        const left = document.createElement("div");
+        left.className = "left";
+        left.innerHTML = `
+            <strong>${course.name}</strong>
+            <span>${course.professor} 교수 | ${course.classroom}</span>
         `;
-        box.querySelector(".online-delete-btn").addEventListener("click", () => {
-            const updated = list.filter(c => c.id !== course.id);
-            saveLocalStorage(key, updated);
+
+        const btn = document.createElement("button");
+        btn.className = "online-delete-btn";
+        btn.textContent = "삭제";
+        btn.onclick = () => {
+            const updated = data.filter(c => c.id !== course.id);
+            localStorage.setItem(key, JSON.stringify(updated));
             renderTimeTable(key);
             renderOnlineClasses(key);
-        });
+        };
+
+        box.appendChild(left);
+        box.appendChild(btn);
         wrapper.appendChild(box);
-    });
+    }
 }
+

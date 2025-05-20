@@ -38,12 +38,11 @@
     <main class="main-centered">
         <button id="addCourseBtn" class="btn-primary">+ 수업 넣기</button>
 
-        <div id="wrapper"></div>
-
         <div id="schedule" class="timetable-card">
             <div class="timetable-header">
                 <span>📅 시간표</span>
             </div>
+            <div id="wrapper" class="online-list-wrapper"></div>
             <div class="timetable-body">
                 <table id="timeTable" class="timetable-table">
                     <thead>
@@ -57,21 +56,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- 1~15교시 -->
-                        <script>
-                            for (let i = 1; i <= 15; i++) {
-                                document.write(`
-                                    <tr>
-                                        <td>${i}교시</td>
-                                        <td></td><td></td><td></td><td></td><td></td>
-                                    </tr>
-                                `);
-                            }
-                        </script>
+                        <!-- JS가 15행 x 6열 자동 생성 -->
                     </tbody>
                 </table>
+
             </div>
         </div>
+
     </main>
 
     <!-- 검색 모달 -->
@@ -93,7 +84,7 @@
                     <button class="filter-btn" data-filter="type">구분: 전체</button>
                     <button class="filter-btn" data-filter="credit">학점: 전체</button>
                 </div>
-                
+
                 <!-- <div class="search-options">
                     <input id="searchInput" placeholder="과목명 또는 교수명 입력" />
                     <div class="radio-group">
