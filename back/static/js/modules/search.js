@@ -1,3 +1,4 @@
+// static/js/modules/search.js
 import { loadLocalStorage, addToLocalStorage } from "./storage.js";
 
 let category;

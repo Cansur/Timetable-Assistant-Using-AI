@@ -1,3 +1,4 @@
+// static/js/modules/titmetable.js
 import { getContrastTextColor, getRandomColor, parseSchedule } from './utils.js';
 
 export function renderTimeTable(key) {
@@ -81,8 +82,6 @@ export function renderTimeTable(key) {
     });
   });
 }
-
-
 
 export function renderOnlineClasses(key) {
     const wrapper = document.getElementById("wrapper");

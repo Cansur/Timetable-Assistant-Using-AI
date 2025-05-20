@@ -1,3 +1,4 @@
+// static/js/modules/storage.js
 import { renderTimeTable, renderOnlineClasses } from './timetable.js';
 
 export function loadLocalStorage(key) {
