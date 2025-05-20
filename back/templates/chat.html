@@ -1,4 +1,3 @@
-<!-- templates/chat.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,145 +8,55 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Helper</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="static/css/styles.css" rel="stylesheet" />
-    <link href="static/css/myStyles.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="static/css/mainIndex.css" rel="stylesheet" />
+    <link href="static/css/chatLayout.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" /> -->
 </head>
 
-<body class="sb-nav-fixed">
+<body style="background-color: #f4f4fc;">
 
-    <!-- 메인 -->
-    <div id="layoutSidenav">
+    <!-- ✅ 수정된 네비게이션 -->
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="/">내 시간표</a></li>
+                <li class="dropdown">
+                    <a href="#">시간표 짜기 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="/chat">AI와 짜기</a></li>
+                        <li><a href="/">직접 짜기</a></li>
+                        <li><a href="/statistics">분석 하기</a></li>
+                        <li><a href="/">시간표 비교 하기</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">학점 계산기</a></li>
+                <li><a href="#">전체 아키텍처</a></li>
+                <li><a href="https://github.com/Cansur/Timetable-Assistant-Using-AI">도움말</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <!-- Side Bar -->
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Main</div>
-                        <a class="nav-link" href="/">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table me-1"></i></div>
-                            TimeTable
-                        </a>
-                        <a class="nav-link" href="/chat">
-                            <div class="sb-nav-link-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-chat" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2.678 11.894a1 1 0 0 1 .287.801 11 11 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8 8 0 0 0 8 14c3.996 0 7-2.807 7-6s-3.004-6-7-6-7 2.808-7 6c0 1.468.617 2.83 1.678 3.894m-.493 3.905a22 22 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a10 10 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105" />
-                                </svg>
-                            </div>
-                            Chat
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Layouts
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            </nav>
-                        </div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Pages
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
-                                    Authentication
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="login.html">Login</a>
-                                        <a class="nav-link" href="register.html">Register</a>
-                                        <a class="nav-link" href="password.html">Forgot Password</a>
-                                    </nav>
-                                </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Error
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="401.html">401 Page</a>
-                                        <a class="nav-link" href="404.html">404 Page</a>
-                                        <a class="nav-link" href="500.html">500 Page</a>
-                                    </nav>
-                                </div>
-                            </nav>
-                        </div>
-                        <div class="sb-sidenav-menu-heading">Addons</div>
-                        <a class="nav-link" href="statistics">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Statistics
-                        </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Tables
-                        </a>
-                    </div>
+    <main class="chat-page">
+        <div class="chat-container">
+            <div class="chat-box">
+                <div class="chat-header">AI와의 대화</div>
+                <div id="chatDisplay" class="chat-display">
+                    <!-- 메시지 출력 -->
                 </div>
-            </nav>
+            </div>
         </div>
 
-        <!-- Main Content -->
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-6 py-8 bg-gray-800 min-h-screen flex flex-col relative">
-                    <h1 class="text-2xl font-semibold text-white mb-6" style="font-family: 'Inter', sans-serif;">Helper
-                        AI</h1>
-                    <div
-                        class="bg-gray-700 bg-opacity-80 rounded-2xl shadow-2xl border border-gray-600 overflow-hidden flex-1 mb-20 relative">
-                        <div class="p-4 border-b border-gray-600">
-                            <span class="text-sm text-gray-300" style="font-family: 'Inter', sans-serif;">AI와의 대화</span>
-                        </div>
-                        <div class="p-6 max-h-[calc(100vh-250px)] overflow-y-auto flex flex-col space-y-4"
-                            id="chatDisplay">
-                            <!-- Chat messages will be dynamically added here -->
-                        </div>
-                        <button id="scrollToBottom"
-                            class="hidden absolute bottom-6 right-6 bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500 transition-all shadow-md z-20"
-                            title="아래로 스크롤">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
-                    <div
-                        class="fixed bottom-0 left-0 right-0 p-4 bg-gray-700 bg-opacity-80 border-t border-gray-600 z-10">
-                        <div class="container-fluid px-6" style="padding-left: calc(250px + 1.5rem);">
-                            <div class="flex items-center space-x-3">
-                                <input type="text"
-                                    class="flex-1 p-3 rounded-xl bg-gray-600 text-white border border-gray-500 focus:outline-none focus:border-blue-400 transition-all placeholder-gray-400 text-sm"
-                                    id="chatInput" placeholder="메시지 입력..." aria-label="Chat input"
-                                    style="font-family: 'Inter', sans-serif;" />
-                                <button
-                                    class="bg-blue-400 text-white p-3 rounded-xl hover:bg-blue-500 transition-all flex items-center text-sm"
-                                    id="sendMessage" style="font-family: 'Inter', sans-serif;">
-                                    <i class="fas fa-arrow-up mr-2"></i> 전송
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+        <!-- ✅ 고정 입력창 -->
+        <div class="chat-input-fixed">
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="메시지 입력..." />
+                <button id="sendMessage" class="btn-rounded">
+                    <i class="fas fa-arrow-up"></i> 전송
+                </button>
+            </div>
         </div>
 
         <!-- 시간표 모달 -->
@@ -176,24 +85,21 @@
                         <p class="text-secondary-emphasis small mb-2">이 시간표와 연동하시겠습니까?</p>
 
                         <div class="d-flex justify-content-end gap-2">
-                            <button id="confirmYes" type="button" class="btn btn-outline-primary btn-sm">예</button>
-                            <button id="confirmNo" type="button" class="btn btn-outline-secondary btn-sm"
+                            <button id="confirmYes" type="button"
+                                class="btn btn-primary btn-sm rounded-pill px-4">예</button>
+                            <button id="confirmNo" type="button" class="btn btn-secondary btn-sm rounded-pill px-4"
                                 data-bs-dismiss="modal">아니오</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-    <!-- <script src="static/js/myscripts.js"></script> -->
     <script type="module" src="static/js/chat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
 </body>
 
 </html>

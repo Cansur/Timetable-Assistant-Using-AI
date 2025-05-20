@@ -8,12 +8,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    let isModalOpen = false;
+
     // Bootstrap 모달 인스턴스 생성
     const modalElement = document.getElementById('lectureModal');
-    const modalInstance = new bootstrap.Modal(modalElement);
+    const modalInstance = new bootstrap.Modal(modalElement, { backdrop: 'static' });
 
     const chatDisplay = document.getElementById('chatDisplay');
-    const scrollToBottomBtn = document.getElementById('scrollToBottom');
+    // const scrollToBottomBtn = document.getElementById('scrollToBottom');
     const style = document.createElement('style');
 
     // 예시 데이터
@@ -34,15 +36,20 @@ document.addEventListener("DOMContentLoaded", function () {
         scrollToBottomBtn.classList.toggle('hidden', isAtBottom);
     });
 
-    scrollToBottomBtn.addEventListener('click', () => {
-        chatDisplay.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-    });
+    // scrollToBottomBtn.addEventListener('click', () => {
+    //     chatDisplay.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+    // });
 
     // "예" 버튼 클릭
     document.getElementById('confirmYes').addEventListener('click', function () {
-        console.log("✅ 저장 처리 실행");  // 여기에 저장 로직 연결
-        window.location.href = '/';
+        console.log("✅ 저장 처리 실행");
         setMyList(lectures);
+
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            // 모달이 닫힌 후에 페이지 이동
+            window.location.href = '/';
+        }, { once: true });
+
         modalInstance.hide();
     });
 
@@ -72,8 +79,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const colorPalette = ['#e3f2fd', '#fce4ec', '#f3e5f5', '#e8f5e9', '#fffde7'];
 
-    // 예시로 사용
-    // openLectureModal(lectures);
+    // 어디선가 강제 초기화할 때
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    document.body.classList.remove('modal-open');
+
+
+    function resetModalState() {
+        modalInstance.hide();
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
+        isModalOpen = false;
+    }
 
     function buildTimetable(lectures) {
         const tbody = document.getElementById('timetable-body');
@@ -114,12 +130,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function openLectureModal(lectures) {
+        // 실제로 열린 모달이면 중복 실행 방지
+        if (isModalOpen || modalElement.classList.contains('show')) return;
+        isModalOpen = true;
+
         buildTimetable(lectures);
-        document.activeElement.blur(); // 현재 포커스 해제
+
+        // 혹시 이전에 쌓인 잔여 백드롭이 있다면 제거
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
+
+        // 모달 열기
         setTimeout(() => {
             modalInstance.show();
         }, 10);
+
+        // 모달 닫혔을 때 정리
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            isModalOpen = false;
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+        }, { once: true });
     }
+
 
     /** 강의 데이터 변환 */
     function transformLectures(lectures) {
@@ -143,22 +176,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const message = input.value.trim();
         if (!message) return;
 
-        // 사용자 메시지 UI 추가
+        const chatDisplay = document.getElementById('chatDisplay');
+        input.value = '';
+
+        // ✅ 사용자 메시지 (오른쪽)
         const userMessage = document.createElement('div');
-        userMessage.className = 'flex justify-end animate-slide-up';
-        userMessage.innerHTML = `
-            <div class="max-w-[70%] bg-blue-400 text-white p-3 rounded-xl shadow-md border border-gray-500 text-sm" style="font-family: 'Inter', sans-serif;">
-                ${message}
-            </div>
-        `;
+        userMessage.className = 'chat-bubble bubble-user animate-slide-up';
+        userMessage.innerText = message;
         chatDisplay.appendChild(userMessage);
         userMessage.scrollIntoView({ behavior: 'smooth' });
 
-        // 입력 비우기
-        input.value = '';
-
         try {
-            // 서버에 메시지 전송
+            // ✅ 서버 요청
             const res = await fetch('/api/recommend', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -166,71 +195,51 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await res.json();
-            lecturesb = data
-            console.log(data);
+            lecturesb = data;
 
-            const aiMessage = document.createElement('div');
-            aiMessage.className = 'flex justify-start animate-slide-up';
-            if (res.ok) {
-                const replyText = data.reply;
+            const replyText = data.reply || '알 수 없는 응답입니다.';
 
-                // 🟦 말풍선 생성
-                const messageBubble = document.createElement("div");
-                messageBubble.className = "max-w-[70%] bg-gray-600 text-white p-3 rounded-xl shadow-md border border-gray-500 text-sm whitespace-pre-wrap";
-                messageBubble.style.fontFamily = "'Inter', sans-serif";
-                messageBubble.innerText = replyText;
+            // ✅ AI 응답 박스 (왼쪽)
+            const aiWrapper = document.createElement('div');
+            aiWrapper.className = 'bubble-ai-wrapper animate-slide-up';
 
-                // 🟨 버튼 생성 (왼쪽 정렬)
-                const lectureButtonWrapper = document.createElement("div");
-                lectureButtonWrapper.className = "mt-2 flex justify-start";  // 왼쪽 정렬
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'chat-bubble bubble-ai';
+            aiBubble.innerText = replyText;
 
-                const lectureButton = document.createElement("button");
-                lectureButton.innerText = "시간표 연동하기";
-                lectureButton.className = `
-                    bg-blue-500 hover:bg-blue-600 text-white 
-                    text-xs font-semibold py-1 px-3 
-                    rounded-full shadow transition duration-200
-                `;
+            aiWrapper.appendChild(aiBubble);
 
-                // 👉 클릭 이벤트
-                lectureButton.addEventListener("click", () => {
-                    openLectureModal(lectures);
-                });
+            // ✅ 버튼 생성
+            const lectureButtonWrapper = document.createElement('div');
+            lectureButtonWrapper.className = 'mt-2 flex justify-start';
 
-                lectureButtonWrapper.appendChild(lectureButton);
+            const lectureButton = document.createElement('button');
+            lectureButton.innerText = "시간표 연동하기";
+            lectureButton.className = 'btn btn-success btn-sm rounded-pill px-3 py-1 shadow';
 
-                // 🧩 전체 묶음
-                const aiMessageWrapper = document.createElement("div");
-                aiMessageWrapper.className = "flex flex-col items-start space-y-1";
+            lectureButton.addEventListener('click', () => {
+                const lectureList = Array.isArray(lecturesb.lectures) ? lecturesb.lectures : lecturesb;
+                openLectureModal(lectureList);
+            });
 
-                aiMessageWrapper.appendChild(messageBubble);
-                aiMessageWrapper.appendChild(lectureButtonWrapper);
+            lectureButtonWrapper.appendChild(lectureButton);
+            aiWrapper.appendChild(lectureButtonWrapper);
 
-                aiMessage.appendChild(aiMessageWrapper);
-            }
-            else {
-                aiMessage.innerHTML = `
-                    <div class="max-w-[70%] bg-red-600 text-white p-3 rounded-xl shadow-md border border-gray-500 text-sm" style="font-family: 'Inter', sans-serif;">
-                        ⚠️ 오류: ${data.error || '알 수 없는 오류'}
-                    </div>
-                `;
-            }
+            chatDisplay.appendChild(aiWrapper);
+            aiWrapper.scrollIntoView({ behavior: 'smooth' });
 
-            chatDisplay.appendChild(aiMessage);
-            aiMessage.scrollIntoView({ behavior: 'smooth' });
-            scrollToBottomBtn.classList.add('hidden');
         } catch (error) {
-            const errorMessage = document.createElement('div');
-            errorMessage.className = 'flex justify-start animate-slide-up';
-            errorMessage.innerHTML = `
-                <div class="max-w-[70%] bg-red-600 text-white p-3 rounded-xl shadow-md border border-gray-500 text-sm" style="font-family: 'Inter', sans-serif;">
-                    ⚠️ 네트워크 오류: ${error.message}
-                </div>
-            `;
-            chatDisplay.appendChild(errorMessage);
-            errorMessage.scrollIntoView({ behavior: 'smooth' });
+            // ✅ 오류 말풍선
+            const errorBubble = document.createElement('div');
+            errorBubble.className = 'chat-bubble bubble-ai animate-slide-up';
+            errorBubble.innerText = `⚠️ 네트워크 오류: ${error.message}`;
+            chatDisplay.appendChild(errorBubble);
+            errorBubble.scrollIntoView({ behavior: 'smooth' });
         }
     }
+
+    resetModalState()
+
 });
 
 

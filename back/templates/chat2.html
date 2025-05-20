@@ -1,3 +1,4 @@
+<!-- templates/chat.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="static/css/styles.css" rel="stylesheet" />
     <link href="static/css/myStyles.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -109,161 +112,88 @@
         <!-- Main Content -->
         <div id="layoutSidenav_content">
             <main>
-
-                <!-- Header -->
-                <div class="border-bottom d-flex justify-content-between p-3">
-                    <div class="px-4 fw-semibold">My schedule</div>
-                    <div class="px-4 fw-semibold">...</div>
-                </div>
-
-                <!-- main -->
-                <div id="main">
-                    
-                    <!-- wapper -->
-                    <div id="wrapper"></div>
-
-                    <!-- Schedule -->
-                    <div id="schedule" class="card mb-4 mx-4 my-3 overflow-auto">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            TimeTable
+                <div class="container-fluid px-6 py-8 bg-gray-800 min-h-screen flex flex-col relative">
+                    <h1 class="text-2xl font-semibold text-white mb-6" style="font-family: 'Inter', sans-serif;">Helper
+                        AI</h1>
+                    <div
+                        class="bg-gray-700 bg-opacity-80 rounded-2xl shadow-2xl border border-gray-600 overflow-hidden flex-1 mb-20 relative">
+                        <div class="p-4 border-b border-gray-600">
+                            <span class="text-sm text-gray-300" style="font-family: 'Inter', sans-serif;">AI와의 대화</span>
                         </div>
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped text-center"
-                                style="table-layout: fixed; width: 100%; border-collapse: collapse;">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th style="width: 80px;"></th>
-                                        <th>월</th>
-                                        <th>화</th>
-                                        <th>수</th>
-                                        <th>목</th>
-                                        <th>금</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="timeTable" style="overflow: hidden; text-overflow: ellipsis;">
-                                    <!-- 1교시 ~ 15교시 -->
-                                    <script>
-                                        for (let i = 1; i <= 15; i++) {
-                                            document.write(`<tr style="height: 60px;">
-                                                <td style="width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${i}교시</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>`);
-                                        }
-                                    </script>
-                                </tbody>
-                            </table>
+                        <div class="p-6 max-h-[calc(100vh-250px)] overflow-y-auto flex flex-col space-y-4"
+                            id="chatDisplay">
+                            <!-- Chat messages will be dynamically added here -->
+                        </div>
+                        <button id="scrollToBottom"
+                            class="hidden absolute bottom-6 right-6 bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500 transition-all shadow-md z-20"
+                            title="아래로 스크롤">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </div>
+                    <div
+                        class="fixed bottom-0 left-0 right-0 p-4 bg-gray-700 bg-opacity-80 border-t border-gray-600 z-10">
+                        <div class="container-fluid px-6" style="padding-left: calc(250px + 1.5rem);">
+                            <div class="flex items-center space-x-3">
+                                <input type="text"
+                                    class="flex-1 p-3 rounded-xl bg-gray-600 text-white border border-gray-500 focus:outline-none focus:border-blue-400 transition-all placeholder-gray-400 text-sm"
+                                    id="chatInput" placeholder="메시지 입력..." aria-label="Chat input"
+                                    style="font-family: 'Inter', sans-serif;" />
+                                <button
+                                    class="bg-blue-400 text-white p-3 rounded-xl hover:bg-blue-500 transition-all flex items-center text-sm"
+                                    id="sendMessage" style="font-family: 'Inter', sans-serif;">
+                                    <i class="fas fa-arrow-up mr-2"></i> 전송
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-
-                <!-- 검색 버튼 -->
-                <button id="searchButton" class="position-fixed start-50 btn btn-danger" style="bottom: 30px;">수업 목록에서
-                    검색</button>
-
-                <!-- 검색 창 (기본적으로 숨김) -->
-                <div id="searchContainer" class="search-container">
-
-                    <!-- 검색 창 헤더 부분 -->
-                    <div class="search-header">
-                        <div class="d-flex">
-                            <div type="button" id="search_btn1"
-                                class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">
-                                <div>전공/영역</div>
-                                <div>:</div>
-                                <div id="selectedSearchField" class="ps-2">없음</div>
-                            </div>
-                            <div type="button" id="search_btn2"
-                                class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">
-                                <div id="tap2">검색어</div>
-                                <div>:</div>
-                                <div id="selectedSearchName" class="ps-2">없음</div>
-                            </div>
-                            <div class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">정렬: 기본
-                            </div>
-                            <div class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">시간: 전체
-                            </div>
-                            <div class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">구분: 전체
-                            </div>
-                            <div class="mx-2 badge rounded-pill text-bg-secondary d-flex align-items-center px-3">학점: 전체
-                            </div>
-                        </div>
-
-                        <div type="button" id="closeButton"
-                            class="mx-2 badge rounded-pill text-bg-danger d-flex align-items-center px-3"
-                            style="height: 28px;">닫기</div>
-                    </div>
-
-                    <!-- 검색 결과 테이블 -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th style="font-size: 14px;">Id</th>
-                                <th style="font-size: 14px;">교과목명</th>
-                                <th style="font-size: 14px;">학점</th>
-                                <th style="font-size: 14px;">이수구분</th>
-                                <th style="font-size: 14px;">담당교수</th>
-                                <th style="font-size: 14px;">수업시간</th>
-                                <th style="font-size: 14px;">강의실</th>
-                                <!-- <th>강의평</th> -->
-                                <th style="font-size: 14px;">담은 인원</th>
-                                <th style="font-size: 14px;">비고</th>
-                            </tr>
-                        </thead>
-                        <tbody id="searchResults">
-                            <!-- 검색 결과가 여기에 추가됨 -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- 검색입력창1 -->
-                <div id="search_Container1" class="search-container-input" style="width: 400px; max-height: 600px;">
-                    <div class="d-flex justify-content-between">
-                        <div class="fs-5">전공/영역</div>
-                        <div type="button" id="search_Container1_Close">X</div>
-                    </div>
-                    <div id="search_Container1_Field" class="m-3 d-flex flex-column">
-                    </div>
-                </div>
-
-                <!-- 검색입력창2 -->
-                <div id="search_Container2" class="search-container-input">
-                    <div class="d-flex justify-content-between">
-                        <div>검색어</div>
-                        <div type="button" id="search_Container2_Close">X</div>
-                    </div>
-                    <div class="mt-3 d-flex flex-row mb-3">
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="tap2radio1"
-                                checked>
-                            <label class="form-check-label" for="tap2radio1">
-                                과목명
-                            </label>
-                        </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="tap2radio2">
-                            <label class="form-check-label" for="tap2radio2">
-                                교수명
-                            </label>
-                        </div>
-                    </div>
-
-                    <input type="text" id="searchInput" class="form-control" placeholder="수업명을 입력하세요..." />
-                </div>
-
             </main>
         </div>
-    </div>
 
+        <!-- 시간표 모달 -->
+        <div id="lectureModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content bg-body-tertiary border border-secondary-subtle shadow-sm">
+                    <div class="modal-body p-3">
+                        <h6 class="text-center text-secondary-emphasis mb-3">-시간표 미리보기-</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center align-middle table-sm mb-3" id="timetable"
+                                style="font-size: 0.7rem;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 50px;">교시</th>
+                                        <th style="width: 40px;">월</th>
+                                        <th style="width: 40px;">화</th>
+                                        <th style="width: 40px;">수</th>
+                                        <th style="width: 40px;">목</th>
+                                        <th style="width: 40px;">금</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="timetable-body" class="table-group-divider"></tbody>
+                            </table>
+                        </div>
+
+                        <p class="text-secondary-emphasis small mb-2">이 시간표와 연동하시겠습니까?</p>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button id="confirmYes" type="button" class="btn btn-outline-primary btn-sm">예</button>
+                            <button id="confirmNo" type="button" class="btn btn-outline-secondary btn-sm"
+                                data-bs-dismiss="modal">아니오</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-    <script type="module" src="static/js/mainIndex.js"></script>
+    <!-- <script src="static/js/myscripts.js"></script> -->
+    <script type="module" src="static/js/chat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 </body>
 
 </html>
