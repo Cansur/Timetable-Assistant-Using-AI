@@ -26,6 +26,8 @@ with app.app_context():
         db.reflect()
         print("✅ 기존 테이블을 반영했습니다!")
 
+        #dmddo
+
 # ✅ API 라우트 등록
 app.register_blueprint(routes, url_prefix="/")
 app.register_blueprint(api, url_prefix="/api")
