@@ -17,6 +17,10 @@ export function addToLocalStorage(key, newValue) {
     const existing = loadLocalStorage(key);
     existing.push(newValue);
     saveLocalStorage(key, existing);
+
+    // ✅ 자동 갱신
+    renderTimeTable(key);
+    renderOnlineClasses(key);
 }
 
 function renderAll(key) {

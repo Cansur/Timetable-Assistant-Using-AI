@@ -1,5 +1,6 @@
 // static/js/modules/search.js
-import { loadLocalStorage, addToLocalStorage } from "./storage.js";
+import { renderTimeTable, renderOnlineClasses } from './timetable.js';
+import { loadLocalStorage, addToLocalStorage } from './storage.js';
 
 let category;
 let isNP;
@@ -59,9 +60,15 @@ function renderSearchResults(courses) {
                 alert(`"${course.name}"은 이미 추가된 강의입니다.`);
                 return;
             }
-            alert(`"${course.name}" 강의를 추가했습니다.`);
+
             addToLocalStorage("myList", course);
+            alert(`"${course.name}" 강의를 추가했습니다.`);
+
+            // ✅ 즉시 반영
+            renderTimeTable("myList");
+            renderOnlineClasses("myList");
         });
+
         searchResults.appendChild(row);
     });
 }

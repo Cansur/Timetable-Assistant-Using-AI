@@ -127,6 +127,20 @@ function initTimeTableStructure() {
 
         tbody.appendChild(tr);
     }
+
+    // ✅ tbody에 이벤트 위임
+    tbody.addEventListener("click", (e) => {
+        if (e.target.classList.contains("delete-btn")) {
+            e.stopPropagation();
+            const id = parseInt(e.target.dataset.id);
+            const data = loadLocalStorage(key);
+            const updated = data.filter(c => c.id !== id);
+            saveLocalStorage(key, updated);
+
+            renderTimeTable(key);
+            renderOnlineClasses(key);
+        }
+    });
 }
 
 // ✅ 필터 팝업 생성 함수

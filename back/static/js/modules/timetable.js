@@ -1,5 +1,6 @@
 // static/js/modules/titmetable.js
 import { getContrastTextColor, getRandomColor, parseSchedule } from './utils.js';
+import { loadLocalStorage, saveLocalStorage } from './storage.js';
 
 export function renderTimeTable(key) {
     const data = JSON.parse(localStorage.getItem(key) || "[]");
@@ -33,9 +34,9 @@ export function renderTimeTable(key) {
             for (const [startBlock, blockLength] of blocks) {
                 const baseRow = rows[startBlock];
 
-                console.log("Trying to render", course.name, "on", day, "row", startBlock, "col", col);
-                console.log("baseRow:", baseRow);
-                console.log("baseRow.cells:", baseRow?.cells);
+                // console.log("Trying to render", course.name, "on", day, "row", startBlock, "col", col);
+                // console.log("baseRow:", baseRow);
+                // console.log("baseRow.cells:", baseRow?.cells);
 
                 if (!baseRow || !baseRow.cells[col]) continue;
 
@@ -69,14 +70,18 @@ export function renderTimeTable(key) {
 
     document.querySelectorAll(".delete-btn").forEach(btn => {
         btn.addEventListener("click", e => {
-            e.stopPropagation();
+            e.stopPropagation(); // ✅ 클릭 전파 차단
             const id = parseInt(btn.dataset.id);
-            const updated = data.filter(c => c.id !== id);
-            localStorage.setItem(key, JSON.stringify(updated));
-            renderTimeTable(key);
-            renderOnlineClasses(key);
+
+            const data = loadLocalStorage(key); // ✅ 기존 저장된 목록 불러옴
+            const updated = data.filter(c => c.id !== id); // ✅ 삭제
+            saveLocalStorage(key, updated); // ✅ 반영
+
+            renderTimeTable(key);        // ✅ 시간표 다시 렌더링
+            renderOnlineClasses(key);    // ✅ 온라인 목록 다시 렌더링
         });
     });
+
 }
 
 export function renderOnlineClasses(key) {
@@ -108,11 +113,14 @@ export function renderOnlineClasses(key) {
         btn.className = "online-delete-btn";
         btn.textContent = "삭제";
         btn.onclick = () => {
+            const data = loadLocalStorage(key); // ✅ 리스트 불러오기
             const updated = data.filter(c => c.id !== course.id);
-            localStorage.setItem(key, JSON.stringify(updated));
-            renderTimeTable(key);
-            renderOnlineClasses(key);
+            saveLocalStorage(key, updated);
+
+            renderTimeTable(key);        // ✅ 시간표 갱신
+            renderOnlineClasses(key);    // ✅ 온라인 수업 갱신
         };
+
 
         box.appendChild(left);
         box.appendChild(btn);
