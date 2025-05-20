@@ -155,7 +155,7 @@ function showFilterPopup(targetBtn, options, onSelect, withInput = false) {
     if (withInput) {
         const input = document.createElement("input");
         input.placeholder = "검색어를 입력하세요";
-        input.style.width = "100%";
+        input.style.width = "80%";
         input.style.padding = "6px";
         input.style.marginBottom = "8px";
         input.style.border = "1px solid #ccc";
