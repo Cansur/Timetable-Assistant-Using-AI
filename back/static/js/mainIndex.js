@@ -1,126 +1,194 @@
-import { markField, fetchLectures, everythingParamsToJson, setIsNP } from './modules/search.js'
-import { renderOnlineClasses, renderTimeTable } from './modules/timetable.js';
+import { everythingParamsToJson, setIsNP } from './modules/search.js';
+import { renderTimeTable, renderOnlineClasses } from './modules/timetable.js';
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const main = document.getElementById("main");
-    // const wrapper = document.getElementById("wrapper");
-    // const schedule = document.getElementById("schedule");
-    // const timeTable = document.getElementById("timeTable");
-    const searchButton = document.getElementById("searchButton");
+document.addEventListener("DOMContentLoaded", () => {
+    const addCourseBtn = document.getElementById("addCourseBtn");
     const searchContainer = document.getElementById("searchContainer");
+    const overlay = document.getElementById("overlay");
     const closeButton = document.getElementById("closeButton");
-    const searchResults = document.getElementById("searchResults");
     const searchInput = document.getElementById("searchInput");
-
-    const search_btn1 = document.getElementById("search_btn1");
-    const search_Container1 = document.getElementById("search_Container1");
-    const search_Container1_Close = document.getElementById("search_Container1_Close");
-    // const search_Container1_Field = document.getElementById("search_Container1_Field");
-
-    const search_btn2 = document.getElementById("search_btn2");
-    const search_Container2 = document.getElementById("search_Container2");
-    const search_Container2_Close = document.getElementById("search_Container2_Close");
-
     const selectedSearchName = document.getElementById("selectedSearchName");
-    // const selectedSearchField = document.getElementById("selectedSearchField");
+    const selectedSearchField = document.getElementById("selectedSearchField");
+    const radioName = document.getElementById("radioName");
 
-    const tap2 = document.getElementById("tap2");
-    const tap2radio1 = document.getElementById("tap2radio1");
+    // 시간표 초기화
+    const tbody = document.getElementById("timeTable");
+    if (tbody.children.length === 0) {
+        for (let i = 1; i <= 15; i++) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${i}교시</td>` + `<td></td>`.repeat(5);
+            tbody.appendChild(row);
+        }
+    }
 
-    let isNP; // 과목명인지 교수명인지 변하는 변수
-
-
-
-    // ----------------------------------------------------------------------------------------------
-    // init
-    // ----------------------------------------------------------------------------------------------
-
-    // 메인 검색창 열기
-    searchButton.addEventListener("click", async function () {
+    // 메인 검색 모달 열기
+    addCourseBtn.addEventListener("click", () => {
         searchContainer.style.display = "block";
-        main.style.height = "54vh";
+        overlay.style.display = "block";
         everythingParamsToJson();
     });
 
-    // 메인 검색창 닫기
-    closeButton.addEventListener("click", function () {
+    // 모달 닫기
+    const closeModal = () => {
         searchContainer.style.display = "none";
-        main.style.height = "100vh"; // 원래 높이로 복구
-    });
+        overlay.style.display = "none";
+    };
+    closeButton.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
 
-    // 검색창의 검색어
-    searchInput.addEventListener("keypress", async function (e) {
-        if (e.key === "Enter") {
-            searchResults.innerHTML = "";
-            const query = searchInput.value.toLowerCase();
+    // 메인 검색창에서 Enter로 검색
+    // searchInput.addEventListener("keypress", (e) => {
+    //     if (e.key !== "Enter") return;
+    //     const query = searchInput.value.trim();
+    //     const isName = radioName.checked;
 
-            if (tap2radio1.checked) {
-                tap2.textContent = "과목명";
-                isNP = "name";
-            } else {
-                tap2.textContent = "교수명";
-                isNP = "professor";
-            }
+    //     setIsNP(isName ? "name" : "professor");
 
-            if (query === "") {
-                isNP = undefined;
-                selectedSearchName.textContent = "없음";
-                selectedSearchName.style.color = "white";
-            } else {
-                selectedSearchName.textContent = query;
-                selectedSearchName.style.color = "#E3242B";
-            }
+    //     if (!query) {
+    //         selectedSearchName.textContent = "없음";
+    //         selectedSearchName.style.color = "white";
+    //     } else {
+    //         selectedSearchName.textContent = query;
+    //         selectedSearchName.style.color = "#E3242B";
+    //     }
 
-            setIsNP(isNP);
+    //     everythingParamsToJson();
+    // });
+
+    // 필터 바 → 검색어 입력 모달 열기
+    // 검색어 입력 필터 클릭 시 → 모달 열기 및 안전한 키 이벤트 바인딩
+    document.querySelector('[data-filter="search"]').addEventListener("click", (e) => {
+        const button = e.currentTarget;
+        showFilterPopup(button, [], (typed) => {
+            button.textContent = `검색어: ${typed}`;
+            document.getElementById("selectedSearchName").textContent = typed;
+            document.getElementById("selectedSearchName").style.color = "#E3242B";
+
+            setIsNP("name"); // 기본은 과목명
             everythingParamsToJson();
+        }, true);
+    });
+    // 검색어 모달에서 Enter로도 적용되도록
+    document.getElementById("searchKeywordInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") applySearchKeyword();
+    });
 
-            search_Container2.style.display = "none";
-            overlay.style.display = "none";
+    // 카테고리 필터 클릭 → 전공/영역 모달 열기
+    document.querySelector('[data-filter="major"]').addEventListener("click", (e) => {
+        const options = ["없음", "전공", "일반교양", "한림소양"];
+        const button = e.currentTarget;
+
+        showFilterPopup(button, options, (selected) => {
+            // 버튼 텍스트 변경
+            button.textContent = `전공/영역: ${selected}`;
+
+            // 내부 상태에 반영
+            document.getElementById("selectedSearchField").textContent = selected;
+            document.getElementById("selectedSearchField").style.color = selected === "없음" ? "white" : "red";
+            window.category = selected === "없음" ? undefined : selected;
+
+            // 다시 검색 실행
+            everythingParamsToJson();
+        });
+    });
+
+
+    // ✅ 필터 팝업 생성 함수
+    function showFilterPopup(targetBtn, options, onSelect, withInput = false) {
+        // 기존 팝업 제거
+        const existing = document.querySelector(".filter-popup");
+        if (existing) existing.remove();
+
+        const popup = document.createElement("div");
+        popup.classList.add("filter-popup");
+
+        if (withInput) {
+            const input = document.createElement("input");
+            input.placeholder = "검색어를 입력하세요";
+            input.style.width = "100%";
+            input.style.padding = "6px";
+            input.style.marginBottom = "8px";
+            input.style.border = "1px solid #ccc";
+            input.style.borderRadius = "6px";
+
+            const confirm = document.createElement("div");
+            confirm.textContent = "적용";
+            confirm.style.background = "#5e5eff";
+            confirm.style.color = "#fff";
+            confirm.style.textAlign = "center";
+            confirm.style.padding = "6px";
+            confirm.style.borderRadius = "6px";
+            confirm.style.cursor = "pointer";
+            confirm.onclick = () => {
+                const val = input.value.trim();
+                if (val) {
+                    onSelect(val);
+                    popup.remove();
+                }
+            };
+
+            popup.appendChild(input);
+            popup.appendChild(confirm);
+        } else {
+            options.forEach(opt => {
+                const item = document.createElement("div");
+                item.textContent = opt;
+                item.onclick = () => {
+                    onSelect(opt);
+                    popup.remove();
+                };
+                popup.appendChild(item);
+            });
         }
-    });
 
-    // 오버레이 생성
-    const overlay = document.createElement("div");
-    overlay.id = "overlay"
-    overlay.classList.add("overlay");
-    document.body.appendChild(overlay);
+        const closeBtn = document.createElement("div");
+        closeBtn.className = "filter-close-btn";
+        closeBtn.innerHTML = "✕";
+        closeBtn.onclick = () => popup.remove();
+        popup.appendChild(closeBtn);
 
-    // 검색 버튼1 클릭 시 검색 창 표시
-    search_btn1.addEventListener("click", function () {
-        search_Container1.style.display = "block";
-        markField();
-        overlay.style.display = "block";
-    });
+        // 위치 설정
+        const rect = targetBtn.getBoundingClientRect();
+        popup.style.top = `${rect.bottom + window.scrollY + 6}px`;
+        popup.style.left = `${rect.left + window.scrollX}px`;
 
-    // 닫기 버튼1 클릭 시 검색 창 닫기
-    search_Container1_Close.addEventListener("click", function () {
-        search_Container1.style.display = "none";
-        overlay.style.display = "none";
-    });
+        document.body.appendChild(popup);
 
-    // 검색 버튼2 클릭 시 검색 창 표시
-    search_btn2.addEventListener("click", function () {
-        search_Container2.style.display = "block";
-        overlay.style.display = "block";
-        searchInput.focus();
-    });
-
-    // 닫기 버튼2 클릭 시 검색 창 닫기
-    search_Container2_Close.addEventListener("click", function () {
-        search_Container2.style.display = "none";
-        overlay.style.display = "none";
-    });
-
-    // 오버레이 클릭 시 검색 창 닫기
-    overlay.addEventListener("click", function () {
-        search_Container1.style.display = "none";
-        search_Container2.style.display = "none";
-        overlay.style.display = "none";
-    });
+        // 외부 클릭 시 제거
+        setTimeout(() => {
+            document.addEventListener("click", function closePopupOutside(e) {
+                if (!popup.contains(e.target) && e.target !== targetBtn) {
+                    popup.remove();
+                    document.removeEventListener("click", closePopupOutside);
+                }
+            });
+        }, 0);
+    }
 
 
+    // 최초 렌더링
     renderTimeTable("myList");
     renderOnlineClasses("myList");
-
 });
+
+// ✅ 검색어 모달에서 "적용" 버튼 또는 Enter 눌렀을 때 호출됨
+window.applySearchKeyword = function () {
+    const keywordInput = document.getElementById("searchKeywordInput");
+    const keyword = keywordInput.value.trim();
+    const mode = document.getElementById("radioName").checked ? "name" : "professor";
+
+    if (!keyword) {
+        alert("검색어를 입력하세요.");
+        return;
+    }
+
+    document.getElementById("selectedSearchName").textContent = keyword;
+    document.getElementById("selectedSearchName").style.color = "#E3242B";
+
+    setIsNP(mode);
+    window.category = document.getElementById("selectedSearchField").textContent;
+
+    everythingParamsToJson();
+
+    document.getElementById("searchKeywordModal").style.display = "none";
+};

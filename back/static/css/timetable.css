@@ -1,0 +1,62 @@
+.timetable-card {
+    width: 95%;
+    max-width: 960px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin: 32px auto;
+    font-size: 14px;
+}
+
+.timetable-header {
+    background-color: var(--highlight);
+    color: white;
+    font-weight: 600;
+    padding: 16px 24px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.timetable-body {
+    padding: 16px 24px;
+}
+
+.timetable-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: center;
+    font-size: 13.5px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.timetable-table thead tr {
+    background-color: #e3e3f9;
+    font-weight: bold;
+}
+
+.timetable-table th,
+.timetable-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.timetable-table td:first-child {
+    background-color: #fafafa;
+    font-weight: 500;
+    width: 80px;
+}
+
+.timetable-table tr {
+    height: 48px;
+}
+
+.timetable-table thead tr:first-child th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.timetable-table thead tr:first-child th:last-child {
+    border-top-right-radius: 12px;
+}

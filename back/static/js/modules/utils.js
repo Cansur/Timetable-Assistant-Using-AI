@@ -1,9 +1,4 @@
-
-/**
- * 
- * @param {*} bgColor 
- * @returns 
- */
+// path: static/js/modules/utils.js
 export function getContrastTextColor(bgColor) {
     const match = bgColor.match(/(\d+)%\)$/);
     if (!match) return 'black';
@@ -11,11 +6,6 @@ export function getContrastTextColor(bgColor) {
     return lightness > 65 ? 'black' : 'white';
 }
 
-/**
- * 
- * @param {*} seed 
- * @returns 
- */
 export function getRandomColor(seed) {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -25,15 +15,6 @@ export function getRandomColor(seed) {
     return `hsl(${hue}, 70%, 80%)`;
 }
 
-// 처음과 데이터를 추가할 때 마다 시간표에 myList라는 localstroge를 불러와
-// 화면에 나타나게 만드는 함수
-// 이 밑에있는 parseSchedule, renderTimeTable, getRandomColor, getContrastTextColor는 GPT가 작성한 것
-// 나중에 공부해서 이해하기
-/**
- * 
- * @param {*} scheduleStr 
- * @returns 
- */
 export function parseSchedule(scheduleStr) {
     const result = {};
     const items = scheduleStr.split(" ");
@@ -47,7 +28,6 @@ export function parseSchedule(scheduleStr) {
         }
     }
 
-    // 연속 교시 묶기
     for (const day in result) {
         result[day].sort((a, b) => a - b);
         const grouped = [];

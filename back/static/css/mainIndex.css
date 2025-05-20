@@ -1,0 +1,245 @@
+/* static/css/mainIndex.css */
+@import url('header.css');
+@import url('timetable.css');
+
+/* 전체 전역 변수 */
+:root {
+    --highlight: #5e5eff;
+    --bg: #f4f4fc;
+    --white: #fff;
+    --gray: #ddd;
+    --blue: #fffffff6;
+    --text-color: #333;
+}
+
+/* 기본 배경 및 폰트 */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-color);
+}
+
+/* 가운데 정렬 메인 */
+.main-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    padding: 10px 16px;
+    background-color: var(--highlight);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+/* 모달 창 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    z-index: 1000;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    padding: 24px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.modal-body input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.search-tags {
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+.table-result {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.table-result th, .table-result td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: center;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 999;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.search-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.search-options input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.radio-group {
+  display: flex;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+.result-wrapper {
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.table-result {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.table-result th, .table-result td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+
+/* 🔹 테이블 줄이기 */
+.table-result th, .table-result td {
+  padding: 4px 6px;     /* 기존보다 줄임 */
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+/* 🔹 필터 팝업 */
+.filter-popup {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 8px;
+  z-index: 1001;
+  font-size: 0.85rem;
+}
+
+.filter-popup div {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.filter-popup div:hover {
+  background-color: #f0f0f0;
+}
+
+/* 닫기 버튼 스타일 */
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+}
+.close-btn:hover {
+  color: #333;
+}
+
+/* 필터 버튼 크기 조정 */
+.filter-btn {
+  background: var(--gray);
+  color: black;
+  padding: 4px 10px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.field-row {
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+.field-row:hover {
+  background-color: #f5f5f5;
+}
+
+/* 🔹 필터 팝업 */
+.filter-popup {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  z-index: 1001;
+  font-size: 0.9rem;
+  min-width: 160px;
+}
+
+.filter-popup div {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.filter-popup div:hover {
+  background-color: #f3f3f3;
+}
+
+.filter-close-btn {
+  display: block;
+  text-align: right;
+  font-size: 1.2rem;
+  margin-top: 8px;
+  cursor: pointer;
+  color: #888;
+}
+
+.filter-close-btn:hover {
+  color: #333;
+}

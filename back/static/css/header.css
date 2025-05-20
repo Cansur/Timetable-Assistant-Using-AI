@@ -1,0 +1,82 @@
+header {
+    background-color: var(--highlight);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 32px;
+    color: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 17px;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--blue);
+}
+
+/* 드롭다운 */
+nav .dropdown {
+    position: relative;
+}
+
+nav .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    min-width: 180px;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+nav .dropdown:hover .dropdown-content,
+nav .dropdown:focus-within .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+nav .dropdown-content a {
+    display: block;
+    padding: 12px 18px;
+    text-decoration: none;
+    color: var(--text-color);  /* 흰 배경에 어두운 글씨 */
+    font-size: 15px;
+    transition: background 0.2s ease;
+}
+
+nav .dropdown-content a:hover {
+    background-color: #e7e7ff;  /* hover 시 부드러운 색상 */
+}
+
+.dropdown-toggle {
+    display: none;
+}
+
+.nav-link {
+    cursor: pointer;
+}
