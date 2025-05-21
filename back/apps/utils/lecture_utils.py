@@ -16,7 +16,7 @@ def filter_lectures(user_input, lecture_data):
         if match_day and match_cat:
             filtered.append(lec)
 
-    return filtered[:10]
+    return filtered[:30]
 
 def build_prompt(user_input, filtered_lectures, liked_feedbacks):
     preference_summary = "\n".join(f"- {f['message']}" for f in liked_feedbacks)
@@ -27,7 +27,12 @@ def build_prompt(user_input, filtered_lectures, liked_feedbacks):
     ```markdown
     | 요일   | 시간           | 과목명           | 교수명 | 구분  |
     |--------|----------------|------------------|--------|-------|
-    | 월요일 | 09:00~10:15    | 컴퓨터개론       | 김철수 | 전공  |
+    | 월/수    | 09:00~11:00, 10:00~11:00     | 자료구조 | 김지훈 | 전공 |
+    시간은 단순히 '1,2교시'가 아니라 실제 시간(예: 09:00~11:00)으로 정확히 계산해서 작성해 주세요.
+    1교시 = 09:00부터 1시간 간격이며, A교시는 09:00부터 1.5시간 간격입니다.
+
+    ⚠️ 하나의 과목이 여러 요일에 걸쳐 있을 경우, 반드시 같은 줄에 출력하세요.
+    요일은 /로 묶고, 시간은 각 요일별로 쉼표로 나열하세요.
     설명은 표 아래 한두 줄만 간단히 적어주세요.
 
     절대 일반 텍스트로 표를 흉내내지 말고, 위와 같은 Markdown 표 문법을 그대로 사용하세요.
