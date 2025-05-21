@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Helper</title>
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+  <link href="static/css/mainIndex.css" rel="stylesheet" />
+  <link href="static/css/compare.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- ✅ 네비게이션 -->
+  <header>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="/">내 시간표</a></li>
+        <li class="dropdown">
+          <a href="#">시간표 짜기 ▾</a>
+          <ul class="dropdown-content">
+            <li><a href="/chat">AI와 짜기</a></li>
+            <li><a href="/">직접 짜기</a></li>
+            <li><a href="/statistics">분석 하기</a></li>
+            <li><a href="/compare">시간표 비교 하기</a></li>
+          </ul>
+        </li>
+        <li><a href="#">학점 계산기</a></li>
+        <li><a href="#">전체 아키텍처</a></li>
+        <li><a href="https://github.com/Cansur/Timetable-Assistant-Using-AI">도움말</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ✅ 시간표 비교 메인 -->
+  <main class="main-centered" style="margin: 0px 200px;">
+    <!-- 시간표 카드 1 -->
+    <div class="timetable-card">
+      <div class="timetable-header">📅 시간표 1</div>
+      <div class="timetable-body">
+        <table class="timetable-table" id="table1">
+          <thead>
+            <tr>
+              <th></th>
+              <th>월</th>
+              <th>화</th>
+              <th>수</th>
+              <th>목</th>
+              <th>금</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 시간표 카드 2 -->
+    <div class="timetable-card">
+      <div class="timetable-header">📅 시간표 2</div>
+      <div class="timetable-body">
+        <table class="timetable-table" id="table2">
+          <thead>
+            <tr>
+              <th></th>
+              <th>월</th>
+              <th>화</th>
+              <th>수</th>
+              <th>목</th>
+              <th>금</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- ✅ 오버레이 (기타 UI 용도 시) -->
+  <div id="overlay" class="overlay"></div>
+
+  <!-- ✅ JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+  <script type="module">
+    // 시간표 자동 생성 (15교시 = 30행)
+    const createTimeTable = (tbody) => {
+      for (let i = 0; i < 30; i++) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+
+        // 교시 출력
+        if (i % 2 === 0) {
+          td.textContent = `${Math.floor(i / 2) + 1}교시`;
+        }
+        td.classList.add("period-cell");
+        tr.appendChild(td);
+
+        // 월~금
+        for (let j = 0; j < 5; j++) {
+          tr.appendChild(document.createElement("td"));
+        }
+
+        tbody.appendChild(tr);
+      }
+    };
+
+    createTimeTable(document.querySelector("#table1 tbody"));
+    createTimeTable(document.querySelector("#table2 tbody"));
+  </script>
+</body>
+
+</html>

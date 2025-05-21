@@ -10,10 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isModalOpen = false;
 
-    // Bootstrap 모달 인스턴스 생성
-    const modalElement = document.getElementById('lectureModal');
-    const modalInstance = new bootstrap.Modal(modalElement, { backdrop: 'static' });
-
     const chatDisplay = document.getElementById('chatDisplay');
     // const scrollToBottomBtn = document.getElementById('scrollToBottom');
     const style = document.createElement('style');
@@ -36,26 +32,19 @@ document.addEventListener("DOMContentLoaded", function () {
         scrollToBottomBtn.classList.toggle('hidden', isAtBottom);
     });
 
-    // scrollToBottomBtn.addEventListener('click', () => {
-    //     chatDisplay.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-    // });
-
     // "예" 버튼 클릭
     document.getElementById('confirmYes').addEventListener('click', function () {
         console.log("✅ 저장 처리 실행");
         setMyList(lectures);
 
-        modalElement.addEventListener('hidden.bs.modal', () => {
-            // 모달이 닫힌 후에 페이지 이동
-            window.location.href = '/';
-        }, { once: true });
+        document.getElementById('lectureModal').classList.add('hidden');
 
-        modalInstance.hide();
+        window.location.href = '/';
     });
 
     // "아니오" 버튼 클릭
     document.getElementById('confirmNo').addEventListener('click', function () {
-        modalInstance.hide();
+        document.getElementById('lectureModal').classList.add('hidden');
     });
 
     // 애니메이션 스타일 추가
@@ -79,17 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const colorPalette = ['#e3f2fd', '#fce4ec', '#f3e5f5', '#e8f5e9', '#fffde7'];
 
-    // 어디선가 강제 초기화할 때
-    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-    document.body.classList.remove('modal-open');
-
-
-    function resetModalState() {
-        modalInstance.hide();
-        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-        document.body.classList.remove('modal-open');
-        isModalOpen = false;
-    }
 
     function buildTimetable(lectures) {
         const tbody = document.getElementById('timetable-body');
@@ -130,27 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function openLectureModal(lectures) {
-        // 실제로 열린 모달이면 중복 실행 방지
-        if (isModalOpen || modalElement.classList.contains('show')) return;
-        isModalOpen = true;
-
         buildTimetable(lectures);
-
-        // 혹시 이전에 쌓인 잔여 백드롭이 있다면 제거
-        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-        document.body.classList.remove('modal-open');
-
-        // 모달 열기
-        setTimeout(() => {
-            modalInstance.show();
-        }, 10);
-
-        // 모달 닫혔을 때 정리
-        modalElement.addEventListener('hidden.bs.modal', () => {
-            isModalOpen = false;
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-            document.body.classList.remove('modal-open');
-        }, { once: true });
+        document.getElementById('lectureModal').classList.remove('hidden');
     }
 
 
@@ -215,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const lectureButton = document.createElement('button');
             lectureButton.innerText = "시간표 연동하기";
-            lectureButton.className = 'btn btn-success btn-sm rounded-pill px-3 py-1 shadow';
+            lectureButton.className = "link-timetable-btn";
 
             lectureButton.addEventListener('click', () => {
                 const lectureList = Array.isArray(lecturesb.lectures) ? lecturesb.lectures : lecturesb;
@@ -237,9 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
             errorBubble.scrollIntoView({ behavior: 'smooth' });
         }
     }
-
-    resetModalState()
-
 });
 
 

@@ -1,0 +1,50 @@
+/* 메인 정렬 */
+.main-centered {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* 가운데 정렬 */
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /* 모바일 대응 */
+    gap: 24px;
+    padding: 20px;
+}
+
+/* 시간표 카드 */
+.timetable-card {
+    width: 600px;
+    /* 🔼 이전보다 넓게 */
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+
+/* 헤더 */
+.timetable-header {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+/* 테이블 */
+.timetable-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    /* ✅ 작게 */
+    text-align: center;
+}
+
+.timetable-table th,
+.timetable-table td {
+    border: 1px solid #ccc;
+    padding: 4px;
+    height: 28px;
+    white-space: nowrap;
+}

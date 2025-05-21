@@ -137,3 +137,168 @@
     color: #333;
     border-top-left-radius: 4px;
 }
+
+/* 모달 전체 */
+.custom-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 배경 오버레이 */
+.custom-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+}
+
+/* ✅ 모달 크기 더 작게 */
+.custom-modal-box {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 18px 16px;
+    max-width: 320px; /* 👈 더 작게 */
+    width: 90%;
+    z-index: 1001;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ✅ 테이블 크기 최적화 */
+.table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+/* 모달 제목 */
+.modal-title {
+    text-align: center;
+    margin-bottom: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* 설명 텍스트 */
+.modal-desc {
+    color: #666;
+    font-size: 13px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.modal-btn-group {
+    display: flex;
+    justify-content: center;     /* ✅ 가운데 정렬 */
+    align-items: center;         /* ✅ 세로 높이 맞춤 */
+    gap: 10px;                   /* ✅ 버튼 사이 간격 */
+    margin-top: 16px;
+    align-items: flex-start;      /* ✅ 위쪽 정렬 */
+}
+
+/* 공통 버튼 크기 정의 (예/아니오 동일하게) */
+.modal-btn-group button {
+    padding: 8px 20px;
+    font-size: 14px;
+    border-radius: 999px;
+    border: none;
+    min-width: 64px;
+    white-space: nowrap;         /* ✅ 줄바꿈 방지 */
+    cursor: pointer;
+}
+
+
+/* 버튼 */
+.btn-primary,
+.btn-secondary {
+    padding: 8px 20px !important;
+    font-size: 14px !important;
+    width: auto !important;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #4f6ef7;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #d0d0d0;
+    color: #333;
+}
+
+/* 테이블 스타일 */
+.table-bordered {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    text-align: center;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+
+.table-bordered thead {
+    background-color: #f0f0f0;
+}
+
+.table-bordered.mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.table-bordered.mini-table th,
+.table-bordered.mini-table td {
+    border: 1px solid #ccc;
+    padding: 3px 4px;
+    white-space: nowrap;
+    min-width: 24px;
+}
+
+/* 숨김 클래스 */
+.hidden {
+    display: none;
+}
+
+/* ✅ Fade-in 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.fade-in .custom-modal-box {
+    animation: fadeIn 0.25s ease-out;
+}
+
+.link-timetable-btn {
+    background-color: #4f6ef7;         /* 메인 파란색 */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.link-timetable-btn:hover {
+    background-color: #3c54d9;         /* hover 시 더 진한 파랑 */
+    transform: translateY(-2px);       /* 살짝 뜨는 느낌 */
+}
+
+.link-timetable-btn:active {
+    transform: scale(0.98);            /* 클릭 시 눌리는 느낌 */
+}
