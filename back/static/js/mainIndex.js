@@ -123,6 +123,7 @@ function initTimeTableStructure() {
         for (let j = 0; j < 5; j++) {
             const td = document.createElement("td");
             tr.appendChild(td);
+            td.style.borderLeft = "1px solid #ddd";
         }
 
         tbody.appendChild(tr);

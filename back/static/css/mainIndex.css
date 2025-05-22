@@ -225,7 +225,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     margin: 16px auto;
-    font-size: 11px;
+    /* font-size: 11px; */
     padding: 0;
 }
 
@@ -234,6 +234,7 @@ body {
     table-layout: fixed;
     border-collapse: collapse;
     font-size: 11px;
+    border: 1px solid #000;
 }
 
 .timetable-table tr {
@@ -265,6 +266,8 @@ body {
     font-weight: 500;
     width: 42px;
     font-size: 10px;
+
+    vertical-align: bottom !important;     /* ✅ 글자를 아래쪽 정렬 */
 }
 
 .timetable-table tr:nth-child(even) {

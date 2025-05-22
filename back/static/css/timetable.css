@@ -40,7 +40,8 @@
 .timetable-table th,
 .timetable-table td {
     padding: 10px;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
+    border-right: 1px solid #ddd;
 }
 
 .timetable-table td:first-child {
@@ -59,4 +60,9 @@
 
 .timetable-table thead tr:first-child th:last-child {
     border-top-right-radius: 12px;
+}
+
+.timetable-wrapper{
+    border: 1px solid #ddd;
+    border-radius: 15px;
 }
