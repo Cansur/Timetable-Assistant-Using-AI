@@ -238,7 +238,7 @@ body {
 }
 
 .timetable-table tr {
-  height: 30px !important;
+    height: 30px !important;
 }
 
 .timetable-table thead tr {
@@ -249,11 +249,11 @@ body {
 
 .timetable-table td,
 .timetable-table th {
-  padding: 1px 2px !important;
-  font-size: 13px !important;
-  line-height: 1.1 !important;
-  vertical-align: middle !important;
-  white-space: nowrap !important;
+    padding: 1px 2px !important;
+    font-size: 13px !important;
+    line-height: 1.1 !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
 }
 
 .timetable-table td {
@@ -267,7 +267,8 @@ body {
     width: 42px;
     font-size: 10px;
 
-    vertical-align: bottom !important;     /* ✅ 글자를 아래쪽 정렬 */
+    vertical-align: bottom !important;
+    /* ✅ 글자를 아래쪽 정렬 */
 }
 
 .timetable-table tr:nth-child(even) {
@@ -276,7 +277,8 @@ body {
 
 /* 셀 안 구조 */
 .course-wrapper {
-    position: relative; /* 🔑 이게 없으면 .delete-btn 위치가 이상해짐 */
+    position: relative;
+    /* 🔑 이게 없으면 .delete-btn 위치가 이상해짐 */
     padding: 0 2px;
 }
 
@@ -308,7 +310,8 @@ body {
 }
 
 .course-wrapper:hover .delete-btn {
-    opacity: 1; /* 🔥 이게 있어야 마우스 올릴 때 보여짐 */
+    opacity: 1;
+    /* 🔥 이게 있어야 마우스 올릴 때 보여짐 */
 }
 
 .delete-btn:hover {
@@ -383,4 +386,59 @@ body {
 
 .online-course-box button:hover {
     color: red;
+}
+
+#addCourseBtn {
+    position: fixed;
+    bottom: 24px;
+    /* ✅ 바닥에서 살짝 띄움 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    padding: 10px 16px;
+    font-size: 14px;
+    background-color: var(--highlight);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    width: 120px;
+}
+
+
+/* 페이드 인 */
+.fade-in {
+    animation: fadeInModal 0.3s ease forwards;
+}
+
+/* 페이드 아웃 */
+.fade-out {
+    animation: fadeOutModal 0.3s ease forwards;
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.95);
+        /* ✅ 두 개 같이 */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+        /* ✅ 중앙 정렬 유지 */
+    }
+}
+
+@keyframes fadeOutModal {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.95);
+    }
 }

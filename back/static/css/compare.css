@@ -4,16 +4,16 @@
     flex-direction: row;
     justify-content: center;
     /* 가운데 정렬 */
-    align-items: flex-start;
-    flex-wrap: wrap;
+    /* align-items: flex-start;*/
+    align-items: center;       
+    flex-wrap: nowrap;         /* 줄바꿈 없이 */
+    gap: 0;                    /* 요소 간격 없음 */
     /* 모바일 대응 */
-    gap: 24px;
-    padding: 20px;
 }
 
 /* 시간표 카드 */
 .timetable-card {
-    width: 520px;
+    width: 600px;
     /* 🔼 이전보다 넓게 */
     max-width: 100%;
     padding: 20px;
@@ -22,7 +22,6 @@
     background-color: #ffffff;
     box-sizing: border-box;
 }
-
 
 /* 헤더 */
 .timetable-header {
@@ -33,18 +32,34 @@
 }
 
 /* 테이블 */
+/* ✅ 테이블 외곽선 추가 */
 .timetable-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
-    /* ✅ 작게 */
     text-align: center;
+    border: 2px solid #000; /* 테이블 전체 외곽선 */
 }
 
+/* 테이블 셀 크기 증가 */
 .timetable-table th,
 .timetable-table td {
     border: 1px solid #ccc;
-    padding: 4px;
-    height: 20px;
+    padding: 6px;          /* ✅ 여백 증가 */
+    height: 40px;          /* ✅ 높이 증가 */
     white-space: nowrap;
 }
+
+/* ✅ 30분 단위(홀수 줄) 숨기기 */
+.half-row {
+    display: none;
+}
+
+/* 교시 라벨 아래 정렬 */
+.period-cell {
+    vertical-align: bottom;
+    padding-bottom: 6px;
+    font-weight: bold;
+}
+
+

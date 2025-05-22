@@ -85,27 +85,29 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
     crossorigin="anonymous"></script>
   <script type="module">
-    // 시간표 자동 생성 (15교시 = 30행)
+    // 시간표 자동 생성 (11교시 = 22행)
     const createTimeTable = (tbody) => {
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 22; i++) {  // ✅ 22줄로 줄임
         const tr = document.createElement("tr");
         const td = document.createElement("td");
 
-        // 교시 출력
+        // 1시간 단위 라벨 (짝수 줄마다)
         if (i % 2 === 0) {
           td.textContent = `${Math.floor(i / 2) + 1}교시`;
         }
+
         td.classList.add("period-cell");
         tr.appendChild(td);
 
-        // 월~금
         for (let j = 0; j < 5; j++) {
           tr.appendChild(document.createElement("td"));
         }
 
+        if (i % 2 === 1) tr.classList.add("half-row");  // 홀수 줄 숨김용
         tbody.appendChild(tr);
       }
     };
+
 
     createTimeTable(document.querySelector("#table1 tbody"));
     createTimeTable(document.querySelector("#table2 tbody"));

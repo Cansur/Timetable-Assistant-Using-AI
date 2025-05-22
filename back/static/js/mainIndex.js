@@ -16,16 +16,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 메인 검색 모달 열기
     addCourseBtn.addEventListener("click", () => {
-        searchContainer.style.display = "block";
+        // searchContainer.style.display = "block";
+        // overlay.style.display = "block";
+
+        const modal = document.getElementById("searchContainer");
+        const overlay = document.getElementById("overlay");
+
+        // 초기 상태 설정
+        modal.classList.remove("fade-out");
+        modal.style.display = "block";
         overlay.style.display = "block";
+
+        // 트리거
+        requestAnimationFrame(() => {
+            modal.classList.add("fade-in");
+        });
+
+
         everythingParamsToJson();
     });
 
     // 모달 닫기
     const closeModal = () => {
-        searchContainer.style.display = "none";
-        overlay.style.display = "none";
+        const modal = document.getElementById("searchContainer");
+        const overlay = document.getElementById("overlay");
+
+        modal.classList.remove("fade-in");
+        modal.classList.add("fade-out");
+
+        // 애니메이션 끝나면 display none 처리
+        setTimeout(() => {
+            modal.style.display = "none";
+            overlay.style.display = "none";
+        }, 300); // fadeOutModal duration과 동일
     };
+
+    closeButton.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
+
     closeButton.addEventListener("click", closeModal);
     overlay.addEventListener("click", closeModal);
 

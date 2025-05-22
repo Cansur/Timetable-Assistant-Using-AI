@@ -155,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const data = await res.json();
             lecturesb = data;
+            console.log(lecturesb);
 
             const replyText = data.reply || '알 수 없는 응답입니다.';
 
