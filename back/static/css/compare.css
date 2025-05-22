@@ -13,7 +13,7 @@
 
 /* 시간표 카드 */
 .timetable-card {
-    width: 600px;
+    width: 520px;
     /* 🔼 이전보다 넓게 */
     max-width: 100%;
     padding: 20px;
@@ -45,6 +45,6 @@
 .timetable-table td {
     border: 1px solid #ccc;
     padding: 4px;
-    height: 28px;
+    height: 20px;
     white-space: nowrap;
 }
