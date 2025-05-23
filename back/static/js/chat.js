@@ -197,8 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
             errorBubble.scrollIntoView({ behavior: 'smooth' });
         }
     }
-
-    openLectureModal(lectures);
 });
 
 
