@@ -412,6 +412,11 @@ body {
     animation: fadeInModal 0.3s ease forwards;
 }
 
+.fade-in2{
+    animation: fadeInModal2 0.3s ease forwards;
+    /* ✅ 두 개 같이 */
+}
+
 /* 페이드 아웃 */
 .fade-out {
     animation: fadeOutModal 0.3s ease forwards;
@@ -428,6 +433,17 @@ body {
         opacity: 1;
         transform: translateX(-50%) scale(1);
         /* ✅ 중앙 정렬 유지 */
+    }
+}
+
+@keyframes fadeInModal2 {
+    0% {
+        opacity: 0;
+        transform: translateX(0%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0%) scale(1);
     }
 }
 
