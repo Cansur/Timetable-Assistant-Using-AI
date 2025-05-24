@@ -37,19 +37,6 @@
 
 </br>
 
-## 설치방법 ( Docker )
-1. **Docker Hub에서 이미지 Pull**
-   ```bash
-   docker pull cansur/timetable:latest
-   ```
-   
-2. **Docker Container 생성**
-   ```bash
-   docker run -p 5000:5000 cansur/timetable:latest
-   ```
-
-</br>
-
 ## 시연 영상
 
 </br>
