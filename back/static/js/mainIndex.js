@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 카테고리 필터 클릭 → 전공/영역 모달 열기
     document.querySelector('[data-filter="major"]').addEventListener("click", (e) => {
-        const options = ["없음", "전공", "일반교양", "한림소양"];
+        const options = ["없음", "일반교양", "전필", "전선", "필수", "기초교양"];
         const button = e.currentTarget;
 
         showFilterPopup(button, options, (selected) => {

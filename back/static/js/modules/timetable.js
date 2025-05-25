@@ -77,8 +77,9 @@ export function renderTimeTable(key) {
             const updated = data.filter(c => c.id !== id); // ✅ 삭제
             saveLocalStorage(key, updated); // ✅ 반영
 
-            renderTimeTable(key);        // ✅ 시간표 다시 렌더링
-            renderOnlineClasses(key);    // ✅ 온라인 목록 다시 렌더링
+            location.reload();
+            // renderTimeTable(key);        // ✅ 시간표 다시 렌더링
+            // renderOnlineClasses(key);    // ✅ 온라인 목록 다시 렌더링
         });
     });
 

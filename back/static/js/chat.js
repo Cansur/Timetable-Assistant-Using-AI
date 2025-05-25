@@ -8,37 +8,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    let isModalOpen = false;
-
     const chatDisplay = document.getElementById('chatDisplay');
-    // const scrollToBottomBtn = document.getElementById('scrollToBottom');
     const style = document.createElement('style');
 
-    // 예시 데이터
-    const lectures = [
-        { 과목명: '대학생을위한실용금융', 교수: '민봉기', 구분: '일반교양', 시간: '화3,화4' },
-        { 과목명: '사랑과법', 교수: '윤효영', 구분: '일반교양', 시간: '온라인1,온라인2' },
-        { 과목명: '문학의이해', 교수: '김양선', 구분: '일반교양', 시간: '월7,월8 수7' }
-    ];
-    const feedbackLog = []; // 피드백 기록용
-    let lecturesb = [];
+    const allRecommendations = [];  // ✅ 여러 추천 저장용 배열
 
     // initialize chat
     document.getElementById('sendMessage').addEventListener('click', sendMessage);
     document.getElementById('chatInput').addEventListener('keypress', function (e) { if (e.key === 'Enter') sendMessage(); });
 
-    chatDisplay.addEventListener('scroll', () => {
-        const isAtBottom = chatDisplay.scrollTop + chatDisplay.clientHeight >= chatDisplay.scrollHeight - 10;
-        scrollToBottomBtn.classList.toggle('hidden', isAtBottom);
-    });
-
     // "예" 버튼 클릭
     document.getElementById('confirmYes').addEventListener('click', function () {
         console.log("✅ 저장 처리 실행");
-        setMyList(lectures);
-
+        setMyList(selectedLectures);
         document.getElementById('lectureModal').classList.add('hidden');
-
         window.location.href = '/';
     });
 
@@ -47,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('lectureModal').classList.add('hidden');
     });
 
-    // 애니메이션 스타일 추가
     style.innerHTML = `
         @keyframes slide-up {
             from { opacity: 0; transform: translateY(15px); }
@@ -59,15 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
     document.head.appendChild(style);
 
-    //----------------------------------------------------------------
-
-    // 강의 시간표 미리보기 모달
     const timeSlots = ['1교시', '2교시', '3교시', '4교시', '5교시', '6교시', '7교시', '8교시'];
     const weekdays = ['월', '화', '수', '목', '금'];
     const timeMap = { '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, 'A': 2, 'B': 3, 'C': 4, 'D': 5, 'E': 6, 'F': 7 };
 
     const colorPalette = ['#e3f2fd', '#fce4ec', '#f3e5f5', '#e8f5e9', '#fffde7'];
 
+    let selectedLectures = [];  // ✅ 선택된 강의 데이터를 임시 저장
 
     function buildTimetable(lectures) {
         const tbody = document.getElementById('timetable-body');
@@ -108,12 +88,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function openLectureModal(lectures) {
+        selectedLectures = lectures;  // ✅ 선택한 강의 데이터를 저장
         buildTimetable(lectures);
         document.getElementById('lectureModal').classList.remove('hidden');
     }
 
-
-    /** 강의 데이터 변환 */
     function transformLectures(lectures) {
         return lectures.map(lecture => ({
             name: lecture.과목명,
@@ -123,9 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }));
     }
 
-    /** local myList에 저장 */
     function setMyList(lectures) {
-        // 변환
         const newLectures = transformLectures(lectures);
         saveLocalStorage('myList', newLectures);
     }
@@ -135,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const message = input.value.trim();
         if (!message) return;
 
-        const chatDisplay = document.getElementById('chatDisplay');
         input.value = '';
 
         // ✅ 사용자 메시지 (오른쪽)
@@ -146,30 +122,27 @@ document.addEventListener("DOMContentLoaded", function () {
         userMessage.scrollIntoView({ behavior: 'smooth' });
 
         try {
-            // ✅ 서버 요청
             const res = await fetch('/api/recommend', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ input: message, feedbackLog })
+                body: JSON.stringify({ input: message, feedbackLog: [] })
             });
 
             const data = await res.json();
-            lecturesb = data;
-            console.log(lecturesb);
+            allRecommendations.push(data);  // ✅ 추천 저장
+            const currentIndex = allRecommendations.length - 1;
+            console.log(allRecommendations);
 
             const replyText = data.reply || '알 수 없는 응답입니다.';
 
-            // ✅ AI 응답 박스 (왼쪽)
             const aiWrapper = document.createElement('div');
             aiWrapper.className = 'bubble-ai-wrapper animate-slide-up';
 
             const aiBubble = document.createElement('div');
             aiBubble.className = 'chat-bubble bubble-ai';
             aiBubble.innerText = replyText;
-
             aiWrapper.appendChild(aiBubble);
 
-            // ✅ 버튼 생성
             const lectureButtonWrapper = document.createElement('div');
             lectureButtonWrapper.className = 'mt-2 flex justify-start';
 
@@ -177,8 +150,11 @@ document.addEventListener("DOMContentLoaded", function () {
             lectureButton.innerText = "시간표 연동하기";
             lectureButton.className = "link-timetable-btn";
 
+            // ✅ 버튼마다 고유 데이터 연결
             lectureButton.addEventListener('click', () => {
-                const lectureList = Array.isArray(lecturesb.lectures) ? lecturesb.lectures : lecturesb;
+                const lectureList = Array.isArray(allRecommendations[currentIndex].lectures)
+                    ? allRecommendations[currentIndex].lectures
+                    : allRecommendations[currentIndex];
                 openLectureModal(lectureList);
             });
 
@@ -189,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
             aiWrapper.scrollIntoView({ behavior: 'smooth' });
 
         } catch (error) {
-            // ✅ 오류 말풍선
             const errorBubble = document.createElement('div');
             errorBubble.className = 'chat-bubble bubble-ai animate-slide-up';
             errorBubble.innerText = `⚠️ 네트워크 오류: ${error.message}`;
@@ -198,9 +173,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
-
-
-
-
-
-

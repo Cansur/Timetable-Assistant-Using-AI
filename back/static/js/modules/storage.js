@@ -10,6 +10,8 @@ export function loadLocalStorage(key) {
 export function saveLocalStorage(key, value) {
     if (!key) return;
     localStorage.setItem(key, JSON.stringify(value));
+
+    renderAll(key);
 }
 
 export function addToLocalStorage(key, newValue) {
@@ -19,8 +21,7 @@ export function addToLocalStorage(key, newValue) {
     saveLocalStorage(key, existing);
 
     // ✅ 자동 갱신
-    renderTimeTable(key);
-    renderOnlineClasses(key);
+    renderAll(key);
 }
 
 function renderAll(key) {
