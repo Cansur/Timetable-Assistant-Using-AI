@@ -47,7 +47,8 @@ export function renderTimeTable(key) {
                 cell.innerHTML = `
                     <div class="course-wrapper">
                         <div class="course-cell">
-                            <strong>${course.name}</strong><br>${course.classroom}
+                            <strong style="margin-bottom: 5px">${course.name}</strong>
+                            ${course.professor}<br>${course.classroom}
                         </div>
                         <button class="delete-btn" data-id="${course.id}">✕</button>
                     </div>
