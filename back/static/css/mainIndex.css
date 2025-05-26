@@ -1,15 +1,18 @@
-/* mainIndex.css */
 /* ===== 공통 ===== */
 @import url('header.css');
 @import url('timetable.css');
 
 :root {
-    --highlight: #5e5eff;
-    --bg: #f4f4fc;
-    --white: #fff;
+    --highlight: #A7C7E7;
+    /* 강조색: 파스텔 블루 */
+    --bg: #fdfdff;
+    /* 배경색: 매우 연한 흰색 */
+    --white: #ffffff;
     --gray: #ddd;
-    --blue: #fffffff6;
-    --text-color: #333;
+    --blue: #e8f0fe;
+    /* 테이블 등 밝은 파란 배경 */
+    --text-color: #444;
+    /* 부드러운 텍스트 컬러 */
 }
 
 body {
@@ -17,6 +20,221 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
     color: var(--text-color);
+}
+
+/* ===== 다크 모드 개선 ===== */
+body.dark-mode {
+    background-color: #181818;
+    color: #e0e0e0;
+}
+
+body.dark-mode .timetable-card,
+/* ===== 다크 모드 수업 검색 모달 개선 ===== */
+body.dark-mode .modal {
+    background-color: #1e1e1e;
+    color: #eee;
+    border: 1px solid #333;
+}
+
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #444;
+    color: #fff;
+}
+
+body.dark-mode .modal-body input[type="text"] {
+    background-color: #2a2a2a;
+    color: #eee;
+    border: 1px solid #555;
+}
+
+body.dark-mode .filter-bar .filter-btn {
+    background-color: #2e2e2e;
+    color: #ccc;
+    border: 1px solid #444;
+}
+
+body.dark-mode .filter-btn:hover {
+    background-color: #3a3a3a;
+}
+
+body.dark-mode .search-tags {
+    color: #bbb;
+}
+
+body.dark-mode .search-tags span {
+    color: #999;
+}
+
+body.dark-mode .result-wrapper {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+}
+
+body.dark-mode .table-result thead {
+    background-color: #2f2f2f;
+    color: #ccc;
+}
+
+body.dark-mode .table-result th,
+body.dark-mode .table-result td {
+    border: 1px solid #444;
+    color: #ddd;
+}
+
+body.dark-mode .table-result tbody tr:hover {
+    background-color: #333;
+}
+
+
+/* 다크 모드에서 온라인 수업 박스 개선 */
+body.dark-mode .online-list-wrapper {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+}
+
+body.dark-mode .online-placeholder {
+    color: #aaa;
+}
+
+body.dark-mode .online-course-box {
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    color: #ddd;
+    padding: 10px 14px;
+}
+
+body.dark-mode .online-course-box .left strong {
+    color: #f0f0f0;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+body.dark-mode .online-course-box .left span {
+    color: #aaa;
+    font-size: 12px;
+}
+
+body.dark-mode .online-course-box button {
+    color: #bbb;
+}
+
+body.dark-mode .online-course-box button:hover {
+    color: #ff6666;
+}
+
+.online-badge {
+    background-color: #444;
+    color: #ccc;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-left: 8px;
+}
+
+
+body.dark-mode .timetable-header {
+    background-color: #3f3f3f;
+    color: #ffffff;
+    border-bottom: 1px solid #555;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #555;
+    border-color: #777;
+    color: #eee;
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: #666;
+}
+
+body.dark-mode .period-cell {
+    background-color: #2b2b2b;
+    color: #ccc;
+}
+
+body.dark-mode .timetable-table td,
+body.dark-mode .timetable-table th {
+    border: 1px solid #444;
+    background-color: #1e1e1e;
+    color: #ccc;
+}
+
+body.dark-mode .timetable-table tr:nth-child(even) {
+    background-color: #202020;
+}
+
+
+body.dark-mode .filter-btn {
+    background-color: #2a2a2a;
+    color: #ccc;
+    border-color: #555;
+}
+
+body.dark-mode .filter-popup {
+    background: #2b2b2b;
+    border-color: #555;
+    color: #ddd;
+}
+
+body.dark-mode .filter-popup div:hover {
+    background-color: #3b3b3b;
+}
+
+body.dark-mode .dropdown-content {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+
+body.dark-mode .dropdown-content li a {
+    color: #ccc;
+}
+
+body.dark-mode .dropdown-content li a:hover {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+body.dark-mode .site-footer {
+    background-color: #222;
+    color: #999;
+    border-top: 1px solid #444;
+}
+
+body.dark-mode #totalCredits {
+    color: #ffd970;
+}
+
+
+
+/* ===== 네비게이션 ===== */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.nav-logo {
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #393939;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-list li a {
+    text-decoration: none;
+    color: #444;
+    font-size: 0.95rem;
 }
 
 /* ===== 레이아웃 ===== */
@@ -31,10 +249,16 @@ body {
     padding: 10px 16px;
     background-color: var(--highlight);
     color: white;
-    border: none;
-    border-radius: 6px;
+    font-weight: 600;
+    border: 2px solid #91B9D4;
+    border-radius: 8px;
     cursor: pointer;
-    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #91B9D4;
 }
 
 /* ===== 모달 ===== */
@@ -44,14 +268,14 @@ body {
     top: 8%;
     left: 50%;
     transform: translateX(-50%);
-    background: white;
+    background: var(--white);
     z-index: 1000;
     border-radius: 16px;
     width: 95%;
     max-width: 960px;
     max-height: 88%;
     overflow-y: auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .modal-content {
@@ -88,23 +312,23 @@ body {
 }
 
 .filter-btn {
-    background: #f0f0f0;
-    color: #333;
+    background: #E6F0FA;
+    color: #444;
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #aacbe3;
     cursor: pointer;
     font-size: 0.85rem;
     transition: all 0.2s ease;
 }
 
 .filter-btn:hover {
-    background-color: #e8e8e8;
+    background-color: #d6e9f9;
 }
 
 .filter-popup {
     position: absolute;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid #bbb;
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
@@ -178,7 +402,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.15);
     z-index: 999;
 }
 
@@ -197,19 +421,16 @@ body {
 }
 
 .table-result thead {
-    background-color: #f6f6f9;
+    background-color: var(--blue);
 }
 
 .table-result th,
 .table-result td {
     border: 1px solid #ddd;
     padding: 5px 6px;
-    /* 작게 줄임 */
     text-align: center;
     line-height: 1.1;
-    /* 줄 간격 감소 */
     height: 28px;
-    /* 최대 높이 제어 */
 }
 
 .table-result tbody tr:hover {
@@ -219,81 +440,84 @@ body {
 
 /* ===== 시간표 영역 ===== */
 .timetable-card {
+    height: calc(100vh - 160px);
+    /* nav, 버튼, footer 등 여백 감안 */
     width: 95%;
     max-width: 860px;
+    overflow: hidden;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    margin: 16px auto;
-    /* font-size: 11px; */
-    padding: 0;
+    margin: 8px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.timetable-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--highlight);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 16px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 .timetable-table {
     width: 100%;
+    height: 100%;
     table-layout: fixed;
     border-collapse: collapse;
-    font-size: 11px;
-    border: 1px solid #000;
+    font-size: min(0.8vw, 12px);
 }
+
+
 
 .timetable-table tr {
-    height: 30px !important;
-}
-
-.timetable-table thead tr {
-    background-color: #f0f0fa;
-    font-weight: bold;
-    font-size: 12px;
+    height: auto !important;
+    min-height: 20px;
 }
 
 .timetable-table td,
 .timetable-table th {
-    padding: 1px 2px !important;
-    font-size: 13px !important;
-    line-height: 1.1 !important;
-    vertical-align: middle !important;
-    white-space: nowrap !important;
+    height: auto;
+    padding: 0.3vw;
+    vertical-align: middle;
+    text-align: center;
+    font-size: min(0.75vw, 11px);
 }
 
-.timetable-table td {
-    min-height: 0 !important;
-    vertical-align: top !important;
-}
+
 
 .timetable-table td:first-child {
     background-color: #f9f9f9;
     font-weight: 500;
-    width: 42px;
-    font-size: 10px;
-
-    vertical-align: bottom !important;
-    /* ✅ 글자를 아래쪽 정렬 */
+    width: 3.5vw;
+    font-size: 0.7vw;
+    text-align: center;
 }
 
 .timetable-table tr:nth-child(even) {
     border-bottom: 1px solid #eee;
 }
 
-/* 셀 안 구조 */
 .course-wrapper {
     position: relative;
-    /* 🔑 이게 없으면 .delete-btn 위치가 이상해짐 */
     padding: 0 2px;
 }
 
 .course-cell {
-    font-size: 10px;
-    text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    vertical-align: top;
 }
+
 
 .delete-btn {
     position: absolute;
@@ -311,19 +535,15 @@ body {
 
 .course-wrapper:hover .delete-btn {
     opacity: 1;
-    /* 🔥 이게 있어야 마우스 올릴 때 보여짐 */
 }
 
 .delete-btn:hover {
     color: red;
 }
 
-/* 왼쪽 교시 셀 스타일 */
 .period-cell {
     background-color: #f9f9f9;
     font-weight: bold;
-    width: 42px;
-    font-size: 10px;
     text-align: center;
 }
 
@@ -333,23 +553,24 @@ body {
     max-width: 960px;
     margin: 16px auto;
     padding: 12px 16px;
-    background: #fff;
+    background: var(--white);
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
-.online-list-wrapper>.online-title {
-    font-weight: bold;
-    font-size: 0.95rem;
-    color: #333;
-    margin-bottom: 8px;
+.online-placeholder {
+    text-align: center;
+    color: #ccc;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
 }
 
 .online-course-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #f7f7fc;
+    background: #f7faff;
     border: 1px solid #ddd;
     padding: 6px 10px;
     border-radius: 8px;
@@ -388,73 +609,58 @@ body {
     color: red;
 }
 
-#addCourseBtn {
-    position: fixed;
-    bottom: 24px;
-    /* ✅ 바닥에서 살짝 띄움 */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 999;
+/* 드롭다운 위치 */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #F4F9FF;
+    /* ✅ 자연스러운 파스텔톤 배경 */
+    border: 1px solid #d4e3f3;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 8px 0;
+    min-width: 180px;
+    z-index: 1000;
+    flex-direction: column;
+}
+
+/* 드롭다운 항목 */
+.dropdown-content li {
+    list-style: none;
+}
+
+.dropdown-content li a {
+    display: block;
     padding: 10px 16px;
-    font-size: 14px;
-    background-color: var(--highlight);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-    width: 120px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
 }
 
-
-/* 페이드 인 */
-.fade-in {
-    animation: fadeInModal 0.3s ease forwards;
+.dropdown-content li a:hover {
+    background-color: #e1f0ff;
+    /* ✅ 마우스오버 시 살짝 진한 파스텔 */
+    color: #000;
 }
 
-.fade-in2{
-    animation: fadeInModal2 0.3s ease forwards;
-    /* ✅ 두 개 같이 */
+/* 드롭다운 토글 */
+.dropdown:hover .dropdown-content {
+    display: flex;
 }
 
-/* 페이드 아웃 */
-.fade-out {
-    animation: fadeOutModal 0.3s ease forwards;
-}
-
-@keyframes fadeInModal {
-    from {
-        opacity: 0;
-        transform: translateX(-50%) scale(0.95);
-        /* ✅ 두 개 같이 */
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(-50%) scale(1);
-        /* ✅ 중앙 정렬 유지 */
-    }
-}
-
-@keyframes fadeInModal2 {
-    0% {
-        opacity: 0;
-        transform: translateX(0%) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0%) scale(1);
-    }
-}
-
-@keyframes fadeOutModal {
-    from {
-        opacity: 1;
-        transform: translateX(-50%) scale(1);
-    }
-
-    to {
-        opacity: 0;
-        transform: translateX(-50%) scale(0.95);
-    }
+.site-footer {
+    background-color: #E6F0FA;
+    color: #555;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 0.9rem;
+    margin-top: 40px;
+    border-top: 1px solid #ccc;
 }

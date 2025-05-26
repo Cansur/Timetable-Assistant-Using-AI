@@ -1,8 +1,12 @@
 // mainIndex.js
 import { everythingParamsToJson, setIsNP } from './modules/search.js';
 import { renderTimeTable, renderOnlineClasses } from './modules/timetable.js';
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+});
 
 document.addEventListener("DOMContentLoaded", () => {
+
     const addCourseBtn = document.getElementById("addCourseBtn");
     const searchContainer = document.getElementById("searchContainer");
     const overlay = document.getElementById("overlay");
@@ -16,44 +20,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 메인 검색 모달 열기
     addCourseBtn.addEventListener("click", () => {
-        // searchContainer.style.display = "block";
-        // overlay.style.display = "block";
-
-        const modal = document.getElementById("searchContainer");
-        const overlay = document.getElementById("overlay");
-
-        // 초기 상태 설정
-        modal.classList.remove("fade-out");
-        modal.style.display = "block";
+        searchContainer.style.display = "block";
         overlay.style.display = "block";
-
-        // 트리거
-        requestAnimationFrame(() => {
-            modal.classList.add("fade-in");
-        });
-
-
         everythingParamsToJson();
+
     });
 
     // 모달 닫기
     const closeModal = () => {
-        const modal = document.getElementById("searchContainer");
-        const overlay = document.getElementById("overlay");
-
-        modal.classList.remove("fade-in");
-        modal.classList.add("fade-out");
-
-        // 애니메이션 끝나면 display none 처리
-        setTimeout(() => {
-            modal.style.display = "none";
-            overlay.style.display = "none";
-        }, 300); // fadeOutModal duration과 동일
+        searchContainer.style.display = "none";
+        overlay.style.display = "none";
     };
-
-    closeButton.addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
-
     closeButton.addEventListener("click", closeModal);
     overlay.addEventListener("click", closeModal);
 
@@ -78,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 카테고리 필터 클릭 → 전공/영역 모달 열기
     document.querySelector('[data-filter="major"]').addEventListener("click", (e) => {
-        const options = ["없음", "일반교양", "전필", "전선", "필수", "기초교양"];
+        const options = ["없음", "전공", "일반교양", "한림소양"];
         const button = e.currentTarget;
 
         showFilterPopup(button, options, (selected) => {
@@ -99,8 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const saved = localStorage.getItem("myList");
     if (saved && saved !== "[]") {
+
         renderTimeTable("myList");
         renderOnlineClasses("myList");
+        updateTotalCredits();
+
     }
 
 
@@ -151,7 +131,6 @@ function initTimeTableStructure() {
         for (let j = 0; j < 5; j++) {
             const td = document.createElement("td");
             tr.appendChild(td);
-            td.style.borderLeft = "1px solid #ddd";
         }
 
         tbody.appendChild(tr);
@@ -168,6 +147,9 @@ function initTimeTableStructure() {
 
             renderTimeTable(key);
             renderOnlineClasses(key);
+            updateTotalCredits();
+            location.reload();
+
         }
     });
 }
@@ -208,6 +190,7 @@ function showFilterPopup(targetBtn, options, onSelect, withInput = false) {
 
         popup.appendChild(input);
         popup.appendChild(confirm);
+
     } else {
         options.forEach(opt => {
             const item = document.createElement("div");
@@ -242,4 +225,21 @@ function showFilterPopup(targetBtn, options, onSelect, withInput = false) {
             }
         });
     }, 0);
+
+
 }
+function updateTotalCredits() {
+    const data = JSON.parse(localStorage.getItem("myList")) || [];
+    const total = data.reduce((sum, course) => sum + (Number(course.credit) || 0), 0);
+    const creditSpan = document.getElementById("totalCredits");
+    if (creditSpan) creditSpan.textContent = `총 학점: ${total}`;
+
+
+}
+
+
+
+
+
+
+
