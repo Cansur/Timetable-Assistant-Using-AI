@@ -1,3 +1,4 @@
+<!-- templates/track_recommend.html -->
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -9,95 +10,62 @@
     <meta name="author" content="GPT" />
     <title>Helper - 트랙 추천</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="/static/css/styles.css" rel="stylesheet" />
-    <link href="/static/css/myStyles.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="/static/css/mainIndex.css" rel="stylesheet" />
 </head>
 
-<body class="bg-gray-100">
-    <!-- 네비게이션 바 -->
-    <nav class="bg-indigo-500 p-4 shadow text-white">
-        <div class="container mx-auto flex justify-between">
-            <div class="text-lg font-semibold">Helper</div>
-            <div class="space-x-4">
-                <a href="/" class="hover:underline">내 시간표</a>
-                <a href="#" class="hover:underline">시간표 짜기</a>
-                <a href="/chat" class="hover:underline">학점 계산기</a>
-                <a href="/statistics" class="hover:underline">전체 아기테쳐</a>
-                <a href="#" class="hover:underline">도움말</a>
-            </div>
+<body>
+    <!-- ✅ 네비게이션 바 통일 -->
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <div class="nav-logo">Helper</div>
+                <li><a href="/">내 시간표</a></li>
+                <li class="dropdown">
+                    <a href="#">시간표 짜기 ▾</a>
+                    <ul class="dropdown-content">
+                        <li><a href="/chat">AI 추천</a></li>
+                        <li><a href="/compare">비교하기</a></li>
+                    </ul>
+                </li>
+                <li><a href="/track_recommend">트랙 추천</a></li>
+                <li><a href="/statistics">통계</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ✅ 트랙 추천 내용 영역 -->
+    <main class="content">
+        <h2 class="section-title">트랙 추천</h2>
+        <form action="/track_recommend" method="post" class="form-box">
+            <label for="grade">학년 선택</label>
+            <select name="grade" id="grade">
+                <option value="1">1학년</option>
+                <option value="2">2학년</option>
+                <option value="3">3학년</option>
+            </select>
+
+            <label for="major">전공 선택</label>
+            <select name="major" id="major">
+                <option value="빅데이터">빅데이터</option>
+                <option value="콘텐츠IT">콘텐츠IT</option>
+                <option value="스마트IoT">스마트IoT</option>
+            </select>
+
+
+            <button type="submit" class="btn-submit">추천 받기</button>
+        </form>
+
+        {% if recommendations %}
+        <div class="recommend-box">
+            <h3>추천 과목</h3>
+            <ul>
+                {% for subject in recommendations %}
+                <li>{{ subject }}</li>
+                {% endfor %}
+            </ul>
         </div>
-    </nav>
-
-    <!-- 본문 콘텐츠 -->
-    <main class="container mx-auto mt-10">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-2xl font-bold mb-6">트랙 추천</h2>
-
-            <!-- 선택 폼 -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div>
-                    <label for="track" class="block mb-1 font-medium text-gray-700">전공 선택</label>
-                    <select id="track" class="w-full border border-gray-300 rounded px-3 py-2">
-                        <option value="빅데이터">빅데이터</option>
-                        <option value="콘텐츠IT">콘텐츠IT</option>
-                        <option value="스마트IoT">스마트IoT</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="grade" class="block mb-1 font-medium text-gray-700">학년 선택</label>
-                    <select id="grade" class="w-full border border-gray-300 rounded px-3 py-2">
-                        <option value="1학년">1학년</option>
-                        <option value="2학년">2학년</option>
-                        <option value="3학년">3학년</option>
-                        <option value="4학년">4학년</option>
-                    </select>
-                </div>
-                <div class="flex items-end">
-                    <button onclick="fetchRecommendation()" class="w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
-                        추천 받기
-                    </button>
-                </div>
-            </div>
-
-            <!-- 결과 영역 -->
-            <div id="result" style="display: none;">
-                <h3 class="text-lg font-semibold mb-2">추천 과목</h3>
-                <ul id="subject-list" class="list-disc list-inside text-gray-800"></ul>
-            </div>
-        </div>
+        {% endif %}
     </main>
-
-    <script>
-        async function fetchRecommendation() {
-            const track = document.getElementById('track').value;
-            const grade = document.getElementById('grade').value;
-
-            const response = await fetch('/api/track-recommend', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ track, grade })
-            });
-
-            const data = await response.json();
-            const list = document.getElementById('subject-list');
-            const resultBox = document.getElementById('result');
-
-            list.innerHTML = '';
-            if (data.subjects) {
-                data.subjects.forEach(subject => {
-                    const li = document.createElement('li');
-                    li.textContent = subject;
-                    list.appendChild(li);
-                });
-                resultBox.style.display = 'block';
-            } else {
-                list.innerHTML = '<li>추천 과목이 없습니다.</li>';
-            }
-        }
-    </script>
 </body>
-</html>
 
+</html>

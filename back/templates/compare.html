@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
-  <title>Helper</title>
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-  <link href="static/css/mainIndex.css" rel="stylesheet" />
-  <link href="static/css/compare.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>시간표 비교</title>
+  <!-- 공통 스타일 복원 -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/mainIndex.css">
+  <link rel="stylesheet" href="/static/css/compare.css">
 </head>
 
 <body>
-  <!-- ✅ 네비게이션 -->
+  <!-- 상단 네비게이션 복원 -->
   <header>
     <nav>
       <ul class="nav-list">
+        <div class="nav-logo">Helper</div>
         <li><a href="/">내 시간표</a></li>
         <li class="dropdown">
           <a href="#">시간표 짜기 ▾</a>
@@ -35,83 +33,83 @@
     </nav>
   </header>
 
-  <!-- ✅ 시간표 비교 메인 -->
-  <main class="main-centered" style="margin: 0px 120px;">
+  <main class="main-centered">
     <!-- 시간표 카드 1 -->
     <div class="timetable-card">
-      <div class="timetable-header">📅 시간표 1</div>
-      <div class="timetable-body">
-        <table class="timetable-table" id="table1">
-          <thead>
-            <tr>
-              <th></th>
-              <th>월</th>
-              <th>화</th>
-              <th>수</th>
-              <th>목</th>
-              <th>금</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="timetable-header">
+        📅 시간표 1
+        <button id="addCourseBtn1" class="btn-primary">+ 수업 넣기</button>
       </div>
+      <table id="table1" class="timetable-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>월</th>
+            <th>화</th>
+            <th>수</th>
+            <th>목</th>
+            <th>금</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 1~11교시 구성 -->
+          {% for i in range(1, 12) %}
+          <tr>
+            <td>{{ i }}교시</td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
     <!-- 시간표 카드 2 -->
     <div class="timetable-card">
-      <div class="timetable-header">📅 시간표 2</div>
-      <div class="timetable-body">
-        <table class="timetable-table" id="table2">
+      <div class="timetable-header">
+        📅 시간표 2
+        <button id="addCourseBtn2" class="btn-primary">+ 수업 넣기</button>
+      </div>
+      <table id="table2" class="timetable-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>월</th>
+            <th>화</th>
+            <th>수</th>
+            <th>목</th>
+            <th>금</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in range(1, 12) %}
+          <tr>
+            <td>{{ i }}교시</td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 오버레이 및 모달 -->
+    <div id="overlay" class="overlay" style="display: none;"></div>
+    <div id="searchContainer" class="modal-container" style="display: none;">
+      <div class="modal-header">
+        <span>🔍 수업 검색</span>
+        <button id="closeButton" class="modal-close">X</button>
+      </div>
+      <div class="modal-body">
+        <table class="course-table">
           <thead>
-            <tr>
-              <th></th>
-              <th>월</th>
-              <th>화</th>
-              <th>수</th>
-              <th>목</th>
-              <th>금</th>
-            </tr>
+            <tr><th>과목명</th><th>학점</th><th>교수</th><th>시간</th></tr>
           </thead>
-          <tbody></tbody>
+          <tbody id="courseTableBody"></tbody>
         </table>
       </div>
     </div>
   </main>
 
-  <!-- ✅ 오버레이 (기타 UI 용도 시) -->
-  <div id="overlay" class="overlay"></div>
-
-  <!-- ✅ JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
-  <script type="module">
-    // 시간표 자동 생성 (11교시 = 22행)
-    const createTimeTable = (tbody) => {
-      for (let i = 0; i < 22; i++) {  // ✅ 22줄로 줄임
-        const tr = document.createElement("tr");
-        const td = document.createElement("td");
-
-        // 1시간 단위 라벨 (짝수 줄마다)
-        if (i % 2 === 0) {
-          td.textContent = `${Math.floor(i / 2) + 1}교시`;
-        }
-
-        td.classList.add("period-cell");
-        tr.appendChild(td);
-
-        for (let j = 0; j < 5; j++) {
-          tr.appendChild(document.createElement("td"));
-        }
-
-        if (i % 2 === 1) tr.classList.add("half-row");  // 홀수 줄 숨김용
-        tbody.appendChild(tr);
-      }
-    };
-
-
-    createTimeTable(document.querySelector("#table1 tbody"));
-    createTimeTable(document.querySelector("#table2 tbody"));
-  </script>
+  <script type="module" src="/static/js/compare.js"></script>
 </body>
 
 </html>

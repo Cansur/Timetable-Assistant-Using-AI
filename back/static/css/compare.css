@@ -1,65 +1,81 @@
-/* 메인 정렬 */
-.main-centered {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    /* 가운데 정렬 */
-    /* align-items: flex-start;*/
-    align-items: center;       
-    flex-wrap: nowrap;         /* 줄바꿈 없이 */
-    gap: 0;                    /* 요소 간격 없음 */
-    /* 모바일 대응 */
+/* 모달 오버레이 */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
 }
 
-/* 시간표 카드 */
+/* 모달 본체 */
+.modal-container {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  width: 600px;
+  max-width: 90%;
+  border-radius: 12px;
+  z-index: 1001;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.course-table th, .course-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.course-table tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* 기타 시간표 스타일 예시 */
 .timetable-card {
-    width: 600px;
-    /* 🔼 이전보다 넓게 */
-    max-width: 100%;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    background-color: #ffffff;
-    box-sizing: border-box;
+  max-width: 960px;
+  margin: 32px auto;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #fff;
 }
 
-/* 헤더 */
 .timetable-header {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 12px;
-    color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
 }
 
-/* 테이블 */
-/* ✅ 테이블 외곽선 추가 */
-.timetable-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    text-align: center;
-    border: 2px solid #000; /* 테이블 전체 외곽선 */
+.btn-primary {
+  padding: 6px 12px;
+  background-color: #6799ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
-
-/* 테이블 셀 크기 증가 */
-.timetable-table th,
-.timetable-table td {
-    border: 1px solid #ccc;
-    padding: 6px;          /* ✅ 여백 증가 */
-    height: 40px;          /* ✅ 높이 증가 */
-    white-space: nowrap;
-}
-
-/* ✅ 30분 단위(홀수 줄) 숨기기 */
-.half-row {
-    display: none;
-}
-
-/* 교시 라벨 아래 정렬 */
-.period-cell {
-    vertical-align: bottom;
-    padding-bottom: 6px;
-    font-weight: bold;
-}
-
-
