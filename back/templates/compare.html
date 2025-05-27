@@ -5,16 +5,150 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
   <title>Helper</title>
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
   <link href="static/css/mainIndex.css" rel="stylesheet" />
   <link href="static/css/compare.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      padding: 20px;
+    }
+
+    .timetable-card {
+      width: 600px;
+      max-width: 100%;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      background-color: #fff;
+    }
+
+    .timetable-header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #5e5eff;
+      margin-bottom: 12px;
+      padding: 5px 12px;
+      border-radius: 8px;
+    }
+
+    .timetable-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #6366f1;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    .header-icon {
+      font-size: 18px;
+    }
+
+    .add-class-btn {
+      padding: 6px 12px;
+      font-size: 12px;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .add-class-btn:hover {
+      background-color: #e68900;
+    }
+
+    .timetable-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: center;
+      border: 2px solid #000;
+    }
+
+    .timetable-table th,
+    .timetable-table td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      height: 40px;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .half-row {
+      display: none;
+    }
+
+    .period-cell {
+      vertical-align: bottom;
+      padding-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .cell-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .delete-btn {
+      display: none;
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .timetable-table td:hover .delete-btn {
+      display: block;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      min-width: 250px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+  </style>
 </head>
 
 <body>
-  <!-- ✅ 네비게이션 -->
   <header>
     <nav>
       <ul class="nav-list">
@@ -28,18 +162,24 @@
             <li><a href="/compare">시간표 비교 하기</a></li>
           </ul>
         </li>
+        <li><a href="/track-recommend">트랙 추천</a></li>
         <li><a href="#">학점 계산기</a></li>
         <li><a href="#">전체 아키텍처</a></li>
         <li><a href="https://github.com/Cansur/Timetable-Assistant-Using-AI">도움말</a></li>
+        <button>다크 모드</button>
       </ul>
     </nav>
   </header>
 
-  <!-- ✅ 시간표 비교 메인 -->
-  <main class="main-centered" style="margin: 0px 120px;">
-    <!-- 시간표 카드 1 -->
+  <main class="main-centered">
     <div class="timetable-card">
-      <div class="timetable-header">📅 시간표 1</div>
+      <div class="timetable-header-container">
+        <div class="timetable-header">
+          <span class="header-icon">📅</span>
+          <span class="header-text">시간표 1</span>
+        </div>
+        <button class="add-class-btn" data-timetable="table1">수업 넣기</button>
+      </div>
       <div class="timetable-body">
         <table class="timetable-table" id="table1">
           <thead>
@@ -57,9 +197,14 @@
       </div>
     </div>
 
-    <!-- 시간표 카드 2 -->
     <div class="timetable-card">
-      <div class="timetable-header">📅 시간표 2</div>
+      <div class="timetable-header-container">
+        <div class="timetable-header">
+          <span class="header-icon">📅</span>
+          <span class="header-text">시간표 2</span>
+        </div>
+        <button class="add-class-btn" data-timetable="table2">수업 넣기</button>
+      </div>
       <div class="timetable-body">
         <table class="timetable-table" id="table2">
           <thead>
@@ -78,35 +223,183 @@
     </div>
   </main>
 
-  <!-- ✅ 오버레이 (기타 UI 용도 시) -->
-  <div id="overlay" class="overlay"></div>
+  <!-- 모달 -->
+  <div id="addClassModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3>수업 추가</h3>
+      <form id="addClassForm">
+        <label>교과목명:<br><input type="text" id="subjectName" required></label><br><br>
+        <label>교수명:<br><input type="text" id="professorName" required></label><br><br>
+        <label>요일:<br>
+          <select id="daySelect">
+            <option value="1">월</option>
+            <option value="2">화</option>
+            <option value="3">수</option>
+            <option value="4">목</option>
+            <option value="5">금</option>
+          </select>
+        </label><br><br>
+        <label>교시:<br>
+          <select id="periodSelect">
+            <option value="1">1교시</option>
+            <option value="2">2교시</option>
+            <option value="3">3교시</option>
+            <option value="4">4교시</option>
+            <option value="5">5교시</option>
+            <option value="6">6교시</option>
+            <option value="7">7교시</option>
+            <option value="8">8교시</option>
+            <option value="9">9교시</option>
+            <option value="10">10교시</option>
+            <option value="11">11교시</option>
+          </select>
+        </label>
+        <label>수업 길이:<br>
+          <select id="durationSelect">
+            <option value="1">1시간</option>
+            <option value="2">2시간</option>
+          </select>
+        </label><br><br>
+        <br><br>
+        <button type="submit">추가</button>
+        <button type="button" id="cancelModal">취소</button>
+      </form>
+    </div>
+  </div>
 
-  <!-- ✅ JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
-  <script type="module">
-    // 시간표 자동 생성 (11교시 = 22행)
+  <script>
+    let currentTableId = "";
+
+    document.querySelectorAll('.add-class-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentTableId = btn.getAttribute('data-timetable');
+        document.getElementById('addClassModal').style.display = 'flex';
+      });
+    });
+
+    document.getElementById('cancelModal').addEventListener('click', () => {
+      document.getElementById('addClassModal').style.display = 'none';
+    });
+
+    document.getElementById('addClassForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const subject = document.getElementById('subjectName').value.trim();
+      const professor = document.getElementById('professorName').value.trim();
+      const day = parseInt(document.getElementById('daySelect').value);
+      const period = parseInt(document.getElementById('periodSelect').value);
+      const duration = parseInt(document.getElementById('durationSelect').value);
+
+      if (!subject || !professor) return;
+
+      const key = `timetableData_${currentTableId}`;
+      const stored = JSON.parse(localStorage.getItem(key) || "[]");
+      stored.push({ subject, professor, day, period, duration });
+      localStorage.setItem(key, JSON.stringify(stored));
+
+      insertClassToTable(currentTableId, subject, professor, day, period, duration);
+      e.target.reset();
+      document.getElementById('addClassModal').style.display = 'none';
+    });
+
+    function insertClassToTable(tableId, subject, professor, day, period, duration = 1) {
+      const table = document.getElementById(tableId);
+      const colors = ["#FFD700", "#FF69B4", "#87CEEB", "#90EE90", "#FFA07A", "#DA70D6", "#00CED1", "#FFB6C1", "#7FFFD4", "#FF7F50"];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      const rowIndex = (period - 1) * 2;
+      const cell = table.rows[rowIndex + 1]?.cells[day];
+      if (!cell) return;
+
+      // 병합 셀 생성
+      cell.innerHTML = `
+    <div class="cell-content">
+      ${subject} (${professor})
+      <button class="delete-btn">x</button>
+    </div>
+  `;
+      cell.rowSpan = duration * 2;  // 1교시는 2줄로 구성, 2시간은 4줄
+      cell.style.backgroundColor = randomColor;
+      cell.style.verticalAlign = "middle";
+
+      // 삭제 버튼
+      const deleteBtn = cell.querySelector('.delete-btn');
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // 병합 해제 및 하위 셀들 복원
+        cell.rowSpan = 1;
+        cell.innerHTML = "";
+        cell.style.backgroundColor = "";
+
+        for (let i = 1; i < duration * 2; i++) {
+          const targetRow = table.rows[rowIndex + 1 + i];
+          const targetCell = targetRow?.cells[day];
+          if (targetCell) {
+            targetCell.style.display = "";
+            targetCell.innerHTML = "";
+            targetCell.style.backgroundColor = "";
+          }
+        }
+
+        updateLocalStorage(tableId);
+      });
+
+      // 아래 셀 숨김 처리
+      for (let i = 1; i < duration * 2; i++) {
+        const targetRow = table.rows[rowIndex + 1 + i];
+        const targetCell = targetRow?.cells[day];
+        if (targetCell) {
+          targetCell.style.display = "none";
+        }
+      }
+    }
+
+    function updateLocalStorage(tableId) {
+      const table = document.getElementById(tableId);
+      const data = [];
+      for (let i = 1; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        if (row.classList.contains('half-row')) continue;
+        for (let j = 1; j < row.cells.length; j++) {
+          const cell = row.cells[j];
+          if (cell.textContent.trim() && !cell.classList.contains('half-row')) {
+            const content = cell.textContent.replace("x", "").trim();
+            const [subject, profPart] = content.split("\n").map(s => s.trim());
+            if (subject && profPart) {
+              data.push({
+                subject: subject,
+                professor: profPart,
+                day: j,
+                period: Math.floor((i - 1) / 2) + 1,
+                duration: 1 // 기본 1시간 (여기서는 수업 길이까지 저장 필요)
+              });
+            }
+          }
+        }
+      }
+      localStorage.setItem(`timetableData_${tableId}`, JSON.stringify(data));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      ['table1', 'table2'].forEach(tableId => {
+        const key = `timetableData_${tableId}`;
+        const stored = JSON.parse(localStorage.getItem(key) || "[]");
+        stored.forEach(item => insertClassToTable(tableId, item.subject, item.professor, item.day, item.period));
+      });
+    });
+
     const createTimeTable = (tbody) => {
-      for (let i = 0; i < 22; i++) {  // ✅ 22줄로 줄임
+      for (let i = 0; i < 22; i++) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
-
-        // 1시간 단위 라벨 (짝수 줄마다)
-        if (i % 2 === 0) {
-          td.textContent = `${Math.floor(i / 2) + 1}교시`;
-        }
-
+        if (i % 2 === 0) td.textContent = `${Math.floor(i / 2) + 1}교시`;
         td.classList.add("period-cell");
         tr.appendChild(td);
-
-        for (let j = 0; j < 5; j++) {
-          tr.appendChild(document.createElement("td"));
-        }
-
-        if (i % 2 === 1) tr.classList.add("half-row");  // 홀수 줄 숨김용
+        for (let j = 0; j < 5; j++) tr.appendChild(document.createElement("td"));
+        if (i % 2 === 1) tr.classList.add("half-row");
         tbody.appendChild(tr);
       }
     };
+
+    const colors = ["#FFD700", "#FF69B4", "#87CEEB", "#90EE90", "#FFA07A", "#DA70D6", "#00CED1", "#FFB6C1", "#7FFFD4", "#FF7F50"];
 
 
     createTimeTable(document.querySelector("#table1 tbody"));

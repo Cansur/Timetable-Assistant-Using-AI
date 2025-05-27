@@ -22,6 +22,10 @@ def statistics_world():
 def compare_world():
     return render_template('compare.html')
 
+@routes.route('/track-recommend')
+def track_recommend_page():
+    return render_template('track_recommend.html')
+
 # @routes.route('/layout-static.html')
 # def layout_static():
 #     return render_template('temp/layout-static.html')
