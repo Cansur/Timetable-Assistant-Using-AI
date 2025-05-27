@@ -32,21 +32,16 @@
 ## 5. 기술 스택
 ### BackEnd :
 <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/flask-000000?style=for-the-badge&logo=flask&logoColor=white"> <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Raspberry%20Pi-A22846?style=for-the-badge&logo=raspberrypi&logoColor=white"> <img src="https://img.shields.io/badge/Flask--RESTX-009688?style=for-the-badge&logo=flask&logoColor=white">
-
-### AI :
-
 </br>
 
 <br>
 
 ## 6. 시스템 구조
 
-<br>
-
-## 7. 설치 방법
+![image](https://github.com/user-attachments/assets/3c736d03-9b18-4546-9c6d-2099a9358798)
 
 <br>
 
-## 8. 기타
+## 7. 기타
 
 <br>
