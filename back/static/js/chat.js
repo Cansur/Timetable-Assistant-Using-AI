@@ -98,7 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
             name: lecture.과목명,
             professor: lecture.교수,
             category: lecture.구분,
-            schedule: lecture.시간
+            schedule: lecture.시간,
+            classroom: lecture.강의실
         }));
     }
 

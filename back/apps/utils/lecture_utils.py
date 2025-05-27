@@ -16,7 +16,7 @@ def filter_lectures(user_input, lecture_data):
         if match_day and match_cat:
             filtered.append(lec)
 
-    return filtered[:30]
+    return filtered[:10 ]
 
 def build_prompt(user_input, filtered_lectures, liked_feedbacks):
     preference_summary = "\n".join(f"- {f['message']}" for f in liked_feedbacks)
