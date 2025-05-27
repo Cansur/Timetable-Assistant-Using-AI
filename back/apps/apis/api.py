@@ -93,20 +93,34 @@ def recommend():
     error_response, result = _process_request()
     if error_response:
         return error_response
-    
+
     prompt, user_input, filtered_lectures = result
+
     try:
         gpt_reply = _call_gpt(prompt)
+
+        # ✅ GPT 응답에서 과목명만 추출
+        import re
+        recommended_titles = re.findall(r"[가-힣A-Za-z0-9]+", gpt_reply)
+
+        # ✅ 실제 강의 정보 중 GPT가 추천한 과목만 선별
+        recommended_lectures = [
+            lec for lec in filtered_lectures
+            if lec.get("과목명") and any(lec["과목명"] in title or title in lec["과목명"] for title in recommended_titles)
+        ]
+
         return jsonify({
             "reply": gpt_reply,
-            "lectures": filtered_lectures,
+            "lectures": recommended_lectures,
             "input": user_input
         })
+
     except Exception as e:
         return jsonify({
             "error": "GPT 호출 실패",
             "detail": str(e)
         }), 500
+
 
 
 # ✅ 2. 특정 강의 조회(여러 조건) (READ)
