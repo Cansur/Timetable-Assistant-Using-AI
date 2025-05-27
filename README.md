@@ -13,12 +13,17 @@
 <br>
 
 ## 3. 프로젝트 기능
-- **Dark Theme UI**: A sleek, eye-friendly interface with a soft gray background (#1F2526) and subtle gray borders (#4B5563) to reduce eye strain.
-- **Fixed Chat Input**: The message input bar is fixed at the bottom of the screen for easy access, regardless of chat history length.
-- **Smooth Scrolling**: Messages automatically scroll into view with a smooth animation, and a "Scroll to Bottom" button appears when the user is not at the latest message.
-- **Responsive Sidebar**: A sidebar with navigation links (e.g., TimeTable, Chat, Layouts) that integrates seamlessly with the main content area.
-- **AI Interaction**: Users can send messages, and the AI responds with a simulated reply after a brief delay, mimicking a real conversation.
-- **Custom Animations**: Slide-up animations for new messages to enhance the futuristic feel.
+#### 1️⃣ AI 시간표 생성 및 적용
+ChatGPT API를 통해 AI가 사용자의 간단한 입력만으로 시간표를 자동 생성합니다. 생성된 시간표는 사용자 선택 후 자신의 시간표에 바로 적용할 수 있으며, 알파벳 교시(A, B)와 시간대(09:00~10:30) 형식을 정확히 지원해 가독성을 높였습니다.
+
+#### 2️⃣ 추천 시간표 비교
+AI가 생성한 여러 시간표를 한 화면에 나란히 표시하여 강의 배치, 요일별 강의 밀집도, 공강 여부, 학점 합계 등 다양한 요소를 쉽게 비교할 수 있습니다. 이를 통해 각 시간표의 장단점을 빠르게 파악하고, 자신에게 맞는 시간표를 선택할 수 있습니다.
+
+#### 3️⃣ 시간표 분석 기능
+선택한 시간표의 전체 학점, 요일별 강의 분포, 공강 요일 유무, 특정 요일의 과밀 여부 등을 한눈에 볼 수 있는 분석 기능을 제공합니다. 단순히 시간표를 확인하는 것을 넘어, 학습 계획 최적화에 필요한 정보를 제공합니다.
+
+#### 4️⃣ 간편한 웹 서비스 구조
+Flask 기반의 백엔드 서버를 오라클 클라우드(OCI)에 배포해 AI 연동, 웹 렌더링, API 제공까지 통합적으로 처리합니다. SQLite로 강의 데이터를 관리하고, 사용자 시간표는 로컬스토리지에 저장하여 서버 부하를 줄였습니다.
 
 <br>
 
@@ -33,20 +38,10 @@
 ### BackEnd :
 <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/flask-000000?style=for-the-badge&logo=flask&logoColor=white"> <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Raspberry%20Pi-A22846?style=for-the-badge&logo=raspberrypi&logoColor=white"> <img src="https://img.shields.io/badge/Flask--RESTX-009688?style=for-the-badge&logo=flask&logoColor=white">
 
-### AI :
-
-</br>
-
 <br>
 
 ## 6. 시스템 구조
 
-<br>
-
-## 7. 설치 방법
-
-<br>
-
-## 8. 기타
+![image](https://github.com/user-attachments/assets/3c736d03-9b18-4546-9c6d-2099a9358798)
 
 <br>
