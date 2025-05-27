@@ -412,7 +412,7 @@ body {
     animation: fadeInModal 0.3s ease forwards;
 }
 
-.fade-in2{
+.fade-in2 {
     animation: fadeInModal2 0.3s ease forwards;
     /* ✅ 두 개 같이 */
 }
@@ -441,6 +441,7 @@ body {
         opacity: 0;
         transform: translateX(0%) scale(0.95);
     }
+
     100% {
         opacity: 1;
         transform: translateX(0%) scale(1);
@@ -457,4 +458,190 @@ body {
         opacity: 0;
         transform: translateX(-50%) scale(0.95);
     }
+}
+
+body.dark-mode {
+    background-color: #181818;
+    color: #e0e0e0;
+}
+
+body.dark-mode .timetable-card,
+/* ===== 다크 모드 수업 검색 모달 개선 ===== */
+body.dark-mode .modal {
+    background-color: #1e1e1e;
+    color: #eee;
+    border: 1px solid #333;
+}
+
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #444;
+    color: #fff;
+}
+
+body.dark-mode .modal-body input[type="text"] {
+    background-color: #2a2a2a;
+    color: #eee;
+    border: 1px solid #555;
+}
+
+body.dark-mode .filter-bar .filter-btn {
+    background-color: #2e2e2e;
+    color: #ccc;
+    border: 1px solid #444;
+}
+
+body.dark-mode .filter-btn:hover {
+    background-color: #3a3a3a;
+}
+
+body.dark-mode .search-tags {
+    color: #bbb;
+}
+
+body.dark-mode .search-tags span {
+    color: #999;
+}
+
+body.dark-mode .result-wrapper {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+}
+
+body.dark-mode .table-result thead {
+    background-color: #2f2f2f;
+    color: #ccc;
+}
+
+body.dark-mode .table-result th,
+body.dark-mode .table-result td {
+
+    border: 1px solid #444;
+    color: #ddd;
+}
+
+body.dark-mode .table-result tbody tr:hover {
+    background-color: #333;
+}
+
+
+/* 다크 모드에서 온라인 수업 박스 개선 */
+body.dark-mode .online-list-wrapper {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+}
+
+body.dark-mode .online-placeholder {
+    color: #aaa;
+}
+
+body.dark-mode .online-course-box {
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    color: #ddd;
+    padding: 10px 14px;
+}
+
+body.dark-mode .online-course-box .left strong {
+    color: #f0f0f0;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+body.dark-mode .online-course-box .left span {
+    color: #aaa;
+    font-size: 12px;
+}
+
+body.dark-mode .online-course-box button {
+    color: #bbb;
+}
+
+body.dark-mode .online-course-box button:hover {
+    color: #ff6666;
+}
+
+.online-badge {
+    background-color: #444;
+    color: #ccc;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-left: 8px;
+}
+
+
+body.dark-mode .timetable-header {
+    background-color: #3f3f3f;
+    color: #ffffff;
+    border-bottom: 1px solid #555;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #555;
+    border-color: #777;
+    color: #eee;
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: #666;
+}
+
+body.dark-mode .period-cell {
+    background-color: #2b2b2b;
+    color: #ccc;
+}
+
+body.dark-mode .timetable-table td,
+body.dark-mode .timetable-table th {
+    background-color: #1e1e1e;
+    color: #ccc;
+}
+
+body.dark-mode .timetable-table th {
+    background-color: #6c6c6c;
+}
+
+body.dark-mode .timetable-table tr:nth-child(even) {
+    background-color: #202020;
+}
+
+
+body.dark-mode .filter-btn {
+    background-color: #2a2a2a;
+    color: #ccc;
+    border-color: #555;
+}
+
+body.dark-mode .filter-popup {
+    background: #2b2b2b;
+    border-color: #555;
+    color: #ddd;
+}
+
+body.dark-mode .filter-popup div:hover {
+    background-color: #3b3b3b;
+}
+
+body.dark-mode .dropdown-content {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+
+body.dark-mode .dropdown-content li a {
+    color: #ccc;
+}
+
+body.dark-mode .dropdown-content li a:hover {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+body.dark-mode .site-footer {
+    background-color: #222;
+    color: #999;
+    border-top: 1px solid #444;
+}
+
+body.dark-mode #totalCredits {
+    color: #ffd970;
 }

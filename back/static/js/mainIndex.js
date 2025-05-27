@@ -2,6 +2,10 @@
 import { everythingParamsToJson, setIsNP } from './modules/search.js';
 import { renderTimeTable, renderOnlineClasses } from './modules/timetable.js';
 
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     const addCourseBtn = document.getElementById("addCourseBtn");
     const searchContainer = document.getElementById("searchContainer");
