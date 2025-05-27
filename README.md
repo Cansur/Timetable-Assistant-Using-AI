@@ -1,27 +1,18 @@
 </br>
 
-# Timetable Assistant Using AI
+# 캡스톤 디자인 - 헬퍼
 
+
+## 1. 프로젝트 소개
 자신이 수강하고자 하는 강의 목록, 선호하는 시간대, 공강 요일, 특정 교수에 대한 선호도 등 다양한 정보를 입력할 수 있으며, AI는 이를 기반으로 시간 충돌이 없고 사용자의 조건을 최대한 반영한 최적의 시간표를 자동으로 생성할 수 있습니다.
 
 </br>
 
-## Team Members
-|Backend|AI|AI|
-|:---:|:---:|:---:|
-|빅데이터 4학년|콘텐츠 IT 4학년|콘텐츠 IT 4학년|
-|이선재|남현우|김태빈|
-</br>
+## 2. 소개 영상
 
-## Tech Stack
-### BackEnd :
-<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/flask-000000?style=for-the-badge&logo=flask&logoColor=white"> <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Raspberry%20Pi-A22846?style=for-the-badge&logo=raspberrypi&logoColor=white"> <img src="https://img.shields.io/badge/Flask--RESTX-009688?style=for-the-badge&logo=flask&logoColor=white">
+<br>
 
-### AI :
-
-</br>
-
-## 주요 기능
+## 3. 프로젝트 기능
 - **Dark Theme UI**: A sleek, eye-friendly interface with a soft gray background (#1F2526) and subtle gray borders (#4B5563) to reduce eye strain.
 - **Fixed Chat Input**: The message input bar is fixed at the bottom of the screen for easy access, regardless of chat history length.
 - **Smooth Scrolling**: Messages automatically scroll into view with a smooth animation, and a "Scroll to Bottom" button appears when the user is not at the latest message.
@@ -29,14 +20,33 @@
 - **AI Interaction**: Users can send messages, and the AI responds with a simulated reply after a brief delay, mimicking a real conversation.
 - **Custom Animations**: Slide-up animations for new messages to enhance the futuristic feel.
 
-## 아키텍쳐
+<br>
+
+## 4. 팀원 소개
+|Backend|AI|AI|
+|:---:|:---:|:---:|
+|빅데이터 4학년|콘텐츠 IT 4학년|콘텐츠 IT 4학년|
+|이선재|남현우|김태빈|
+<br>
+
+## 5. 기술 스택
+### BackEnd :
+<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/flask-000000?style=for-the-badge&logo=flask&logoColor=white"> <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Raspberry%20Pi-A22846?style=for-the-badge&logo=raspberrypi&logoColor=white"> <img src="https://img.shields.io/badge/Flask--RESTX-009688?style=for-the-badge&logo=flask&logoColor=white">
+
+### AI :
 
 </br>
 
-## 프로세스
+<br>
 
-</br>
+## 6. 시스템 구조
 
-## 시연 영상
+<br>
 
-</br>
+## 7. 설치 방법
+
+<br>
+
+## 8. 기타
+
+<br>
