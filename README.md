@@ -10,6 +10,9 @@
 
 ## 2. 소개 영상
 
+https://github.com/user-attachments/assets/8573ca0f-993e-4096-b6b7-289d1c24bf0b
+
+
 <br>
 
 ## 3. 프로젝트 기능
@@ -44,4 +47,7 @@ Flask 기반의 백엔드 서버를 오라클 클라우드(OCI)에 배포해 AI 
 
 ![image](https://github.com/user-attachments/assets/3c736d03-9b18-4546-9c6d-2099a9358798)
 
+<br>
+<br>
+<br>
 <br>
